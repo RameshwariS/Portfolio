@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="index.css">
+ 
+</head>
+<body>
+    <div class="conatianer">
+        <div class="main">
+            <div class="search">
+                <input  type="text" placeholder="Enter City Name" spellcheck="false">
+                <button ><img src="magnifying-glass.png" alt=""></button>
+            </div>
+            <div class="hide">
+            <div class="weather">
+                <div class="icon">
+                    <img src="sun.png" alt="">
+                </div>
+                <div class="tempncity">
+                    <h1 class="temp"> 22°C</h1>
+                    <h1 class="city">New York</h1>
+                   
+                </div>
+                <div class="extra">
+                    <div class="humiditydiv">
+                        <img src="flood.png" alt="">
+                        <p class="humidity">50%</p>
+                        <p>Humidity</p>
+                    </div>
+                    <div class="Wind">
+                        <img src="wind.png" alt="">
+                         <p class="wind">15 km/hr</p>
+                        <p>Wind Speed</p>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+    </div>
+    <script >
+        const apikey ="e81c05b0675bee3e0764e96cf37e6fd4";
+        const apiUrl ="https://api.openweathermap.org/data/2.5/weather?units=metric&q="
+        const searchbox = document.querySelector('.search input')
+       const searchBtn = document.querySelector('.search button')
+       let val;
+    searchbox.addEventListener("change", (e) => {
+       val = e.target.value;
+      console.log(val);
+    });
+    let toggle=false;
+    async function checkwhether(val) {
+        toggle=true;
+        const response =await fetch(apiUrl+val+`&appid=${apikey}`)
+        var data=await response.json();
+         weather= data.weather[0].main;
+             console.log(data)
+             document.querySelector(".city").innerHTML = data.name;
+             document.querySelector(".temp").innerHTML = Math.round (data.main.temp)+"°C";
+             document.querySelector(".humidity").innerHTML = data.main.humidity+"%";
+             document.querySelector(".wind").innerHTML = data.wind.speed+" Km/hr";
+            if(weather=="Rain"){
+                document.querySelector(".icon img").src = "rain.png" 
+            }
+            else if(weather=="Clear") {
+                document.querySelector(".icon img").src = "sun (1).png" 
+            }
+             else if(weather=="Snow") {
+                document.querySelector(".icon img").src = "snow.png" 
+            }
+            document.querySelector(".hide").style.display="block";
+        }   
+       
+    searchBtn.addEventListener("click",()=>{
+        checkwhether(val);
+    })
+
+    </script>
+</body>
+<!-- </html>https://api.openweathermap.org/data/2.5/weather?q=Sangli&appid=e81c05b0675bee3e0764e96cf37e6fd4&units=metric -->
