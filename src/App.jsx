@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+
 const projects = [
   {
     name: 'Movie Booking API',
@@ -106,15 +108,52 @@ const currentlyExploring = [
   'Performance-focused React patterns for large UI states',
 ];
 
+const typingPhrases = [
+  'Computer Science student building reliable full-stack products.',
+  'Focused on backend APIs, React interfaces, and AI-assisted workflows.',
+  'Open to internships and impactful engineering work.',
+];
+
 function App() {
   const particles = Array.from({ length: 18 }, (_, i) => i);
   const matrixCols = Array.from({ length: 14 }, (_, i) => i);
+
   const profileLinks = {
     linkedin: 'https://www.linkedin.com/in/rameshwari-satpute-8068322a6/',
     github: 'https://github.com/RameshwariS',
     leetcode: 'https://leetcode.com/u/shrutisatpute1112/',
     codolio: 'https://codolio.com/profile/shruti1',
   };
+
+  const [typedText, setTypedText] = useState('');
+  const [phraseIndex, setPhraseIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  useEffect(() => {
+    const currentPhrase = typingPhrases[phraseIndex];
+    const speed = isDeleting ? 28 : 52;
+
+    const timer = setTimeout(() => {
+      if (!isDeleting) {
+        const next = currentPhrase.slice(0, typedText.length + 1);
+        setTypedText(next);
+
+        if (next === currentPhrase) {
+          setTimeout(() => setIsDeleting(true), 900);
+        }
+      } else {
+        const next = currentPhrase.slice(0, Math.max(typedText.length - 1, 0));
+        setTypedText(next);
+
+        if (next.length === 0) {
+          setIsDeleting(false);
+          setPhraseIndex((prev) => (prev + 1) % typingPhrases.length);
+        }
+      }
+    }, speed);
+
+    return () => clearTimeout(timer);
+  }, [typedText, phraseIndex, isDeleting]);
 
   useEffect(() => {
     const revealEls = document.querySelectorAll('.reveal');
@@ -131,24 +170,42 @@ function App() {
     );
 
     revealEls.forEach((el) => observer.observe(el));
+
     const onMove = (event) => {
       const x = (event.clientX / window.innerWidth) * 100;
       const y = (event.clientY / window.innerHeight) * 100;
       document.documentElement.style.setProperty('--mx', `${x}%`);
       document.documentElement.style.setProperty('--my', `${y}%`);
+      document.documentElement.style.setProperty('--cx', `${event.clientX}px`);
+      document.documentElement.style.setProperty('--cy', `${event.clientY}px`);
     };
+
+    const hoverables = document.querySelectorAll('a, .card, .chip');
+    const activateCursor = () => document.body.classList.add('cursor-hover');
+    const deactivateCursor = () => document.body.classList.remove('cursor-hover');
+
+    hoverables.forEach((el) => {
+      el.addEventListener('mouseenter', activateCursor);
+      el.addEventListener('mouseleave', deactivateCursor);
+    });
 
     window.addEventListener('mousemove', onMove);
 
     return () => {
       observer.disconnect();
       window.removeEventListener('mousemove', onMove);
+      hoverables.forEach((el) => {
+        el.removeEventListener('mouseenter', activateCursor);
+        el.removeEventListener('mouseleave', deactivateCursor);
+      });
     };
   }, []);
 
   return (
     <div className="page">
       <div className="cursor-glow" />
+      <div className="cursor-dot" />
+      <div className="cursor-ring" />
       <div className="tech-grid" />
       <div className="scanline" />
       <div className="beam beam-a" />
@@ -163,13 +220,7 @@ function App() {
           <span key={col} className="matrix-col" />
         ))}
       </div>
-      <div className="hud-corners" aria-hidden="true">
-        <span className="corner tl" />
-        <span className="corner tr" />
-        <span className="corner bl" />
-        <span className="corner br" />
-      </div>
-      <div className="particles">
+      <div className="particles" aria-hidden="true">
         {particles.map((id) => (
           <span key={id} className="particle" />
         ))}
@@ -180,8 +231,9 @@ function App() {
       <header className="hero section reveal">
         <p className="eyebrow">Portfolio</p>
         <h1>Rameshwari Rajendra Satpute</h1>
-        <p className="subtitle">
-          Computer Science student building reliable full-stack and AI-powered products.
+        <p className="subtitle typing-line">
+          <span className="typed-text">{typedText}</span>
+          <span className="caret" aria-hidden="true" />
         </p>
         <div className="status-row">
           <span className="status-dot" /> Open to internships and impactful engineering work
@@ -210,6 +262,10 @@ function App() {
             <span>REST APIs</span>
             <span>DSA</span>
             <span>Linux</span>
+            <span>React.js</span>
+            <span>Node.js</span>
+            <span>Express.js</span>
+            <span>MongoDB</span>
           </div>
         </section>
 
@@ -407,4 +463,3 @@ function App() {
 }
 
 export default App;
-import { useEffect } from 'react';
