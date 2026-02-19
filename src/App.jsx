@@ -111,7 +111,7 @@ const currentlyExploring = [
 const typingPhrases = [
   'Computer Science student building reliable full-stack products.',
   'Focused on backend APIs, React interfaces, and AI-assisted workflows.',
-  'Open to internships and impactful engineering work.',
+  'Building impactful engineering solutions with strong execution focus.',
 ];
 
 function App() {
@@ -236,7 +236,7 @@ function App() {
           <span className="caret" aria-hidden="true" />
         </p>
         <div className="status-row">
-          <span className="status-dot" /> Open to internships and impactful engineering work
+          <span className="status-dot" /> Building production-minded software across web and AI
         </div>
         <div className="hero-meta">
           <a href="tel:+917875743747">+91 7875743747</a>
@@ -280,9 +280,8 @@ function App() {
           </p>
           <p>
             My working style is execution-heavy: define scope quickly, ship a reliable first
-            version, then iterate based on testing and feedback. I am currently looking for
-            internship opportunities where I can contribute to production features and learn from
-            strong engineering teams.
+            version, then iterate based on testing and feedback. I focus on contributing to
+            production-grade features and solving practical engineering problems.
           </p>
         </section>
 
@@ -458,6 +457,31 @@ function App() {
           </article>
         </section>
       </main>
+
+      <footer className="section reveal">
+        <article className="card footer-contact">
+          <h2>Contact</h2>
+          <p className="footer-note">Reach me directly for collaborations, projects, and opportunities.</p>
+          <div className="contact-grid">
+            <a className="contact-item" href="mailto:rameshwaris1112@gmail.com">
+              <span>Email</span>
+              <strong>rameshwaris1112@gmail.com</strong>
+            </a>
+            <a className="contact-item" href="tel:+917875743747">
+              <span>Mobile</span>
+              <strong>+91 7875743747</strong>
+            </a>
+            <a className="contact-item" href={profileLinks.github} target="_blank" rel="noreferrer">
+              <span>GitHub</span>
+              <strong>github.com/RameshwariS</strong>
+            </a>
+            <a className="contact-item" href={profileLinks.linkedin} target="_blank" rel="noreferrer">
+              <span>LinkedIn</span>
+              <strong>linkedin.com/in/rameshwari-satpute-8068322a6</strong>
+            </a>
+          </div>
+        </article>
+      </footer>
     </div>
   );
 }
