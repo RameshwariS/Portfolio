@@ -7,6 +7,10 @@ const experience = {
   period: 'Jun 2026 – Jul 2026 (2 months)',
   location: 'Pune, India',
   stack: ['Java', 'Spring Boot', 'REST APIs', 'JUnit', 'Mockito', 'CI/CD', 'Agile/Scrum'],
+  metrics: [
+    { label: 'Unit/Integration Test Coverage', value: '97%', progress: 97 },
+    { label: 'Modular Architecture', value: 'Controller-Service-Repo', progress: 95 },
+  ],
   bullets: [
     'Refactored and developed scalable REST APIs in Java using Spring Boot for a modular multi-tier service architecture following controller-service-repository design principles.',
     'Developed comprehensive unit and integration tests using JUnit and Mockito, achieving 97% code coverage while improving software quality and maintainability.',
@@ -192,7 +196,7 @@ function App() {
     return localStorage.getItem('retro-theme') || 'cyber-neon';
   });
   const [scanlines, setScanlines] = useState(true);
-  const [projectTab, setProjectTab] = useState('featured'); // 'featured' | 'all'
+  const [projectTab, setProjectTab] = useState('featured');
 
   // Typing effect
   const [typedText, setTypedText] = useState('');
@@ -207,10 +211,24 @@ function App() {
     'Type "help" to see commands, or "cat resume" for summary.',
   ]);
 
+  const particles = Array.from({ length: 14 }, (_, i) => i);
+
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('retro-theme', theme);
   }, [theme]);
+
+  // Mouse spotlight coordinates
+  useEffect(() => {
+    const onMouseMove = (e) => {
+      const x = (e.clientX / window.innerWidth) * 100;
+      const y = (e.clientY / window.innerHeight) * 100;
+      document.documentElement.style.setProperty('--mouse-x', `${x}%`);
+      document.documentElement.style.setProperty('--mouse-y', `${y}%`);
+    };
+    window.addEventListener('mousemove', onMouseMove);
+    return () => window.removeEventListener('mousemove', onMouseMove);
+  }, []);
 
   // Typing effect loop
   useEffect(() => {
@@ -379,14 +397,25 @@ function App() {
       <div className="bg-perspective" aria-hidden="true">
         <div className="perspective-plane" />
       </div>
+      <div className="bg-glow" aria-hidden="true" />
+
+      {/* Floating Retro Particles */}
+      <div className="particles-layer" aria-hidden="true">
+        {particles.map((i) => (
+          <span key={i} className="particle" />
+        ))}
+      </div>
 
       {scanlines && <div className="scanlines-layer" aria-hidden="true" />}
 
       {/* Top Navbar / HUD */}
       <nav className="top-nav">
         <div className="nav-title">
-          <span className="live-dot" />
-          <span>RAMESHWARI SATPUTE</span>
+          <span className="live-dot-wrap">
+            <span className="live-dot" />
+            <span className="live-ring" />
+          </span>
+          <span className="brand-text">RAMESHWARI SATPUTE</span>
           <span className="nav-sep">/</span>
           <span className="nav-role">PORTFOLIO</span>
         </div>
@@ -451,7 +480,9 @@ function App() {
           </div>
 
           <div className="window-inner hero-inner">
-            <h1 className="hero-name">Rameshwari Rajendra Satpute</h1>
+            <h1 className="hero-name glitch-hover" data-text="Rameshwari Rajendra Satpute">
+              Rameshwari Rajendra Satpute
+            </h1>
 
             <div className="typing-container">
               <span className="typing-prompt">&gt;</span>
@@ -465,26 +496,38 @@ function App() {
               distributed backend services, Go/Redis microservices, and leading 180+ developers as Main Program Director at WLUG.
             </p>
 
-            {/* Quick Metrics Bar */}
+            {/* Quick Metrics Bar with Animated Meters */}
             <div className="metrics-row">
               <div className="metric-box">
                 <span className="metric-title">CGPA</span>
                 <strong className="metric-data accent">8.69 / 10</strong>
+                <div className="metric-meter">
+                  <div className="meter-fill" style={{ width: '86.9%' }} />
+                </div>
                 <span className="metric-sub">Walchand College of Engg</span>
               </div>
               <div className="metric-box">
                 <span className="metric-title">EXPERIENCE</span>
                 <strong className="metric-data">SWE Intern</strong>
+                <div className="metric-meter">
+                  <div className="meter-fill" style={{ width: '97%' }} />
+                </div>
                 <span className="metric-sub">UBS, Pune (Summer 2026)</span>
               </div>
               <div className="metric-box">
                 <span className="metric-title">LEETCODE</span>
                 <strong className="metric-data accent">750+ Solved</strong>
+                <div className="metric-meter">
+                  <div className="meter-fill" style={{ width: '88%' }} />
+                </div>
                 <span className="metric-sub">Rating: 1745 (Top 10%)</span>
               </div>
               <div className="metric-box">
                 <span className="metric-title">LEADERSHIP</span>
                 <strong className="metric-data">Director</strong>
+                <div className="metric-meter">
+                  <div className="meter-fill" style={{ width: '92%' }} />
+                </div>
                 <span className="metric-sub">Walchand Linux Users' Group</span>
               </div>
             </div>
@@ -634,6 +677,7 @@ function App() {
             <div className="cards-grid">
               {flagshipProjects.map((p) => (
                 <div key={p.name} className="project-card">
+                  <div className="card-beam" />
                   <div className="card-top">
                     <h3 className="project-title">{p.name}</h3>
                     {p.badge && <span className="small-badge">{p.badge}</span>}
@@ -664,6 +708,7 @@ function App() {
               {projectTab === 'all' &&
                 otherProjects.map((p) => (
                   <div key={p.name} className="project-card">
+                    <div className="card-beam" />
                     <div className="card-top">
                       <h3 className="project-title">{p.name}</h3>
                       {p.badge && <span className="small-badge">{p.badge}</span>}
