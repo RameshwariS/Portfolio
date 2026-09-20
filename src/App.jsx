@@ -520,16 +520,9 @@ function App() {
                 <div className="metric-meter">
                   <div className="meter-fill" style={{ width: '88%' }} />
                 </div>
-                <span className="metric-sub">Rating: 1745 (Top 10%)</span>
+                <span className="metric-sub">Rating: 1745(Highest) (Top 10%)</span>
               </div>
-              <div className="metric-box">
-                <span className="metric-title">LEADERSHIP</span>
-                <strong className="metric-data">Director</strong>
-                <div className="metric-meter">
-                  <div className="meter-fill" style={{ width: '92%' }} />
-                </div>
-                <span className="metric-sub">Walchand Linux Users' Group</span>
-              </div>
+             
             </div>
 
             {/* Contact & Profile Links */}
