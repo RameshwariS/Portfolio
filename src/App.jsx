@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react';
 
-// Resume Data
+// ── Resume Data ──────────────────────────────────────────────────────────
 const experience = {
   company: 'UBS, Pune',
   role: 'Software Engineering Intern',
-  period: 'Jun 2026 – Jul 2026 (2 months)',
+  period: 'Jun 2026 – Jul 2026',
   location: 'Pune, India',
   stack: ['Java', 'Spring Boot', 'REST APIs', 'JUnit', 'Mockito', 'CI/CD', 'Agile/Scrum'],
   metrics: [
-    { label: 'Unit/Integration Test Coverage', value: '97%', progress: 97 },
-    { label: 'Modular Architecture', value: 'Controller-Service-Repo', progress: 95 },
+    { label: 'Test Coverage', value: '97%', progress: 97 },
+    { label: 'Architecture', value: 'Controller-Service-Repo', progress: 95 },
   ],
   bullets: [
     'Refactored and developed scalable REST APIs in Java using Spring Boot for a modular multi-tier service architecture following controller-service-repository design principles.',
@@ -22,40 +22,38 @@ const experience = {
 const flagshipProjects = [
   {
     name: 'GoProxyX',
-    stack: 'Go, Redis, Docker, Reverse Proxy, REST API',
+    stack: 'Go · Redis · Docker · Reverse Proxy · REST API',
     github: 'https://github.com/RameshwariS',
     bullets: [
       'Built a production-grade API Gateway serving as a scalable entry point for distributed microservices and client requests.',
       'Implemented JWT authentication with middleware chaining to enable secure request processing and modular software design.',
-      'Designed a Redis-backed Token Bucket rate limiter to improve scalability, optimize throughput and protect distributed systems from abusive traffic.',
-      'Implemented dynamic reverse proxy routing for distributed multi-tier services, enabling efficient request forwarding and service communication.',
-      'Integrated centralized logging, validation, and error handling to improve observability, debugging, and software reliability.',
+      'Designed a Redis-backed Token Bucket rate limiter to improve scalability and protect distributed systems from abusive traffic.',
+      'Implemented dynamic reverse proxy routing for distributed multi-tier services, enabling efficient request forwarding.',
       'Containerized services using Docker with isolated networking and gateway exposure for scalable deployment.',
     ],
   },
   {
-    name: 'DSV (Dataset Versioning System)',
-    stack: 'Python, CLI, ML Experiment Tracking',
-    badge: 'Finalist, WCE ACM Hackathon 2026',
+    name: 'DSV — Dataset Versioning System',
+    stack: 'Python · CLI · ML Experiment Tracking',
+    badge: 'Finalist · WCE ACM Hackathon 2026',
     github: 'https://github.com/RameshwariS',
     bullets: [
-      'Engineered a lightweight, file-first toolkit to improve reproducibility in machine learning workflows without heavy infrastructure.',
-      'Built a mechanism to track and version experiment inputs, workflows and outputs, including datasets, preprocessing steps, parameters and model artifacts.',
-      'Delivered run-level tracking with full context to ensure reproducibility, simplify comparisons, and support auditability.',
-      'Structured metadata, metrics, and artifacts consistently to streamline debugging and performance evaluation.',
-      'Improved experiment management and collaboration through a clear and traceable development history.',
+      'Engineered a lightweight, file-first toolkit to improve reproducibility in machine learning workflows.',
+      'Built a mechanism to track and version experiment inputs, workflows and outputs including datasets, parameters and model artifacts.',
+      'Delivered run-level tracking with full context to ensure reproducibility, simplify comparisons and support auditability.',
+      'Structured metadata, metrics and artifacts consistently to streamline debugging and performance evaluation.',
     ],
   },
   {
     name: 'Movie Booking Site',
-    stack: 'React (Vite), Node.js, Express.js, MongoDB Atlas, RESTful API',
+    stack: 'React (Vite) · Node.js · Express.js · MongoDB Atlas · REST API',
     github: 'https://github.com/RameshwariS/MOVIE_BOOKING',
     live: 'https://github.com/RameshwariS/MOVIE_BOOKING',
     bullets: [
-      'Built a full-stack movie booking platform using React (Vite), Node.js/Express, and MongoDB Atlas, supporting movies, theatres, showtimes, seat booking, payments, and reviews.',
+      'Built a full-stack movie booking platform supporting movies, theatres, showtimes, seat booking, payments and reviews.',
       'Designed a RESTful API across 6 resource domains with role-based authorization for USER, ADMIN, and THEATER_OWNER roles using JWT.',
-      'Integrated Google OAuth 2.0 via Google Identity Services (GIS) with secure server-side ID token verification using google-auth-library.',
-      'Architected a modular MVC backend with separated controllers, services, routes, and middleware layers (verifyToken, requireAdmin, requireOwner).',
+      'Integrated Google OAuth 2.0 via Google Identity Services with secure server-side ID token verification.',
+      'Architected a modular MVC backend with separated controllers, services, routes and middleware layers.',
     ],
   },
 ];
@@ -63,83 +61,46 @@ const flagshipProjects = [
 const otherProjects = [
   {
     name: 'AgriSeva',
-    stack: 'React.js, Express.js, TensorFlow.js, NVIDIA APIs',
-    badge: '1st Place, WCE ACM Hackathon 2025',
+    stack: 'React.js · Express.js · TensorFlow.js · NVIDIA APIs',
+    badge: '1st Place · WCE ACM 2025',
     github: 'https://github.com/Nandinipatil1410/WCEHackathon2025_TeamAnvesha',
     live: 'https://agriseva.vercel.app/',
     bullets: [
-      'Built AI-powered plant disease detection processing 1,200+ images across 12 crop diseases.',
+      'AI-powered plant disease detection processing 1,200+ images across 12 crop diseases.',
       'Integrated crop suggestions using soil input and live weather signals.',
       'Added multilingual government scheme explorer and chatbot assistance.',
     ],
   },
   {
     name: 'Blogify',
-    stack: 'Node.js, Express.js, MongoDB, EJS',
+    stack: 'Node.js · Express.js · MongoDB · EJS',
     github: 'https://github.com/RameshwariS/Blog',
     live: 'https://blogify-oz95.onrender.com/',
     bullets: [
-      'Built and deployed a full-stack blogging platform with auth, image uploads, and comments.',
-      'Implemented secure password hashing and a responsive mobile interface.',
-      'Hosted live deployment on Render.',
-    ],
-  },
-  {
-    name: 'Paste - Notes App',
-    stack: 'React.js, Redux Toolkit, LocalStorage',
-    github: 'https://github.com/RameshwariS/PasteApp',
-    live: 'https://paste-app-one-lime.vercel.app/',
-    bullets: [
-      'Built a responsive note management app with create, edit, search, and copy workflows.',
-      'Used Redux Toolkit for centralized state and predictable updates.',
-      'Enabled local persistence through localStorage.',
+      'Full-featured blog platform with user auth, post creation, editing and deletion.',
+      'Server-side rendering with EJS for fast initial page loads.',
     ],
   },
   {
     name: 'URL Shortener',
-    stack: 'Node.js, Express.js, MongoDB, EJS',
+    stack: 'Node.js · Express.js · MongoDB · EJS',
     github: 'https://github.com/RameshwariS/URL-Shortner',
     bullets: [
-      'Developed short-link generation with fast and reliable redirection logic.',
-      'Added input validation and error handling for stable user experience.',
-      'Integrated MongoDB persistence for reliable link mappings.',
+      'Short-link generation with fast and reliable redirection logic.',
+      'Input validation, error handling and MongoDB persistence for reliable link mappings.',
     ],
   },
 ];
 
 const skillCategories = [
-  {
-    title: 'Programming Languages',
-    items: ['Java', 'C++', 'JavaScript', 'Python', 'Go', 'SQL'],
-  },
-  {
-    title: 'Backend Development',
-    items: ['Spring Boot', 'Node.js', 'Express.js', 'REST APIs', 'Microservices', 'Redis'],
-  },
-  {
-    title: 'Frontend Development',
-    items: ['HTML5', 'CSS3', 'React.js', 'EJS'],
-  },
-  {
-    title: 'Databases',
-    items: ['MongoDB', 'MySQL', 'PostgreSQL'],
-  },
-  {
-    title: 'Tools & Platforms',
-    items: ['Git', 'GitHub', 'Linux', 'Docker', 'Firebase'],
-  },
+  { title: 'Languages', items: ['Java', 'C++', 'JavaScript', 'Python', 'Go', 'SQL'] },
+  { title: 'Backend', items: ['Spring Boot', 'Node.js', 'Express.js', 'REST APIs', 'Microservices', 'Redis'] },
+  { title: 'Frontend', items: ['HTML5', 'CSS3', 'React.js', 'EJS'] },
+  { title: 'Databases', items: ['MongoDB', 'MySQL', 'PostgreSQL'] },
+  { title: 'Tools & Platforms', items: ['Git', 'GitHub', 'Linux', 'Docker', 'Firebase'] },
   {
     title: 'Coursework',
-    items: [
-      'Data Structures & Algorithms',
-      'Object-Oriented Programming',
-      'Software Engineering',
-      'Operating Systems',
-      'DBMS',
-      'Computer Networks',
-      'Machine Learning',
-      'Cloud Computing',
-    ],
+    items: ['DSA', 'OOP', 'Software Engineering', 'OS', 'DBMS', 'Networks', 'ML', 'Cloud'],
   },
 ];
 
@@ -148,19 +109,19 @@ const leadership = {
   org: "Walchand Linux Users' Group (WLUG)",
   period: 'May 2025 – Present',
   bullets: [
-    'Delivered a session on Golang at Metamorphosis 2k26, a two-day event focused on Docker and Golang, engaging 180+ participants.',
-    'Conducted a session at LinuxDiary 5.0, a two-day event promoting Linux and open-source culture, and led 5+ hands-on workshops and community initiatives.',
+    'Delivered a session on Golang at Metamorphosis 2k26 (Docker & Golang), engaging 180+ participants.',
+    'Conducted a session at LinuxDiary 5.0 promoting Linux and open-source culture; led 5+ hands-on workshops.',
     'Coordinated 3 flagship open-source events: Open Source Day 2k26, LinuxDiary 6.0, and Metamorphosis 2k26.',
     'Presented an episode of FOSS FILES Season 6 on Anycast and DNS routing in modern web architecture.',
   ],
 };
 
 const achievements = [
-  'Earned the AWS Educate – Introduction to Cloud 101 certification badge.',
-  'Won 1st place in WCE ACM Hackathon 2025 (Novice Track): engineered an AI-powered plant disease detection solution, ranking 1st among 20+ teams.',
-  'Won 1st place in TechFusion CodeDuet 2025 pair-programming contest, demonstrating teamwork and algorithmic problem-solving under time pressure.',
-  'Named a finalist in WCE ACM Hackathon 2026 (Expert Track) for the DSV (Dataset Versioning System) project.',
-  'Ranked in the top 450 of 2,300+ participants in ICPC AlgoQueen 2025.',
+  'AWS Educate — Introduction to Cloud 101 certification badge.',
+  '1st Place · WCE ACM Hackathon 2025 (Novice Track) — AI-powered plant disease detection, ranked 1st among 20+ teams.',
+  '1st Place · TechFusion CodeDuet 2025 pair-programming contest.',
+  'Finalist · WCE ACM Hackathon 2026 (Expert Track) for the DSV project.',
+  'Top 450 of 2,300+ participants · ICPC AlgoQueen 2025.',
 ];
 
 const education = {
@@ -185,575 +146,301 @@ const profileLinks = {
 
 const typingPhrases = [
   'Software Engineering Intern at UBS.',
-  'B.Tech CSE at Walchand College of Engineering (CGPA 8.69).',
-  'Main Program Director at Walchand Linux Users\' Group (WLUG).',
-  'Solved 750+ problems on LeetCode (Rating 1745, Top 10%).',
-  'Building backend APIs, distributed systems, and web apps.',
+  'B.Tech CSE @ Walchand College of Engineering.',
+  'Main Program Director at WLUG.',
+  '750+ LeetCode problems solved (Rating 1745, Top 10%).',
+  'Building backend APIs, distributed systems & web apps.',
 ];
 
+// ── App ──────────────────────────────────────────────────────────────────
 function App() {
-  const [theme, setTheme] = useState(() => {
-    return localStorage.getItem('retro-theme') || 'cyber-neon';
-  });
-  const [scanlines, setScanlines] = useState(true);
   const [projectTab, setProjectTab] = useState('featured');
-
-  // Typing effect
   const [typedText, setTypedText] = useState('');
   const [phraseIndex, setPhraseIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
-
-  // CLI modal
   const [cliOpen, setCliOpen] = useState(false);
   const [cliInput, setCliInput] = useState('');
   const [cliLogs, setCliLogs] = useState([
     'Rameshwari Satpute — Portfolio Terminal',
-    'Type "help" to see commands, or "cat resume" for summary.',
+    'Type "help" to see available commands.',
   ]);
 
-  const particles = Array.from({ length: 14 }, (_, i) => i);
+  const particles = Array.from({ length: 12 }, (_, i) => i);
 
+  // Mouse spotlight
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('retro-theme', theme);
-  }, [theme]);
-
-  // Mouse spotlight coordinates
-  useEffect(() => {
-    const onMouseMove = (e) => {
-      const x = (e.clientX / window.innerWidth) * 100;
-      const y = (e.clientY / window.innerHeight) * 100;
-      document.documentElement.style.setProperty('--mouse-x', `${x}%`);
-      document.documentElement.style.setProperty('--mouse-y', `${y}%`);
+    const onMove = (e) => {
+      document.documentElement.style.setProperty('--mx', `${(e.clientX / window.innerWidth) * 100}%`);
+      document.documentElement.style.setProperty('--my', `${(e.clientY / window.innerHeight) * 100}%`);
     };
-    window.addEventListener('mousemove', onMouseMove);
-    return () => window.removeEventListener('mousemove', onMouseMove);
+    window.addEventListener('mousemove', onMove);
+    return () => window.removeEventListener('mousemove', onMove);
   }, []);
 
-  // Typing effect loop
+  // Typing effect
   useEffect(() => {
-    const currentPhrase = typingPhrases[phraseIndex];
-    const speed = isDeleting ? 25 : 50;
-
+    const phrase = typingPhrases[phraseIndex];
+    const speed = isDeleting ? 22 : 48;
     const timer = setTimeout(() => {
       if (!isDeleting) {
-        const next = currentPhrase.slice(0, typedText.length + 1);
+        const next = phrase.slice(0, typedText.length + 1);
         setTypedText(next);
-        if (next === currentPhrase) {
-          setTimeout(() => setIsDeleting(true), 1200);
-        }
+        if (next === phrase) setTimeout(() => setIsDeleting(true), 1200);
       } else {
-        const next = currentPhrase.slice(0, Math.max(typedText.length - 1, 0));
+        const next = phrase.slice(0, Math.max(typedText.length - 1, 0));
         setTypedText(next);
         if (next.length === 0) {
           setIsDeleting(false);
-          setPhraseIndex((prev) => (prev + 1) % typingPhrases.length);
+          setPhraseIndex((p) => (p + 1) % typingPhrases.length);
         }
       }
     }, speed);
-
     return () => clearTimeout(timer);
   }, [typedText, phraseIndex, isDeleting]);
 
-  // Keyboard shortcut `~` to toggle CLI
+  // ` key opens CLI
   useEffect(() => {
     const onKey = (e) => {
-      if (e.key === '`') {
-        e.preventDefault();
-        setCliOpen((prev) => !prev);
-      }
+      if (e.key === '`') { e.preventDefault(); setCliOpen((p) => !p); }
       if (e.key === 'Escape') setCliOpen(false);
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, []);
 
-  // Intersection observer for section reveals
+  // Scroll reveals
   useEffect(() => {
-    const elements = document.querySelectorAll('.reveal');
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('in-view');
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.1 }
+    const els = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver(
+      (entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in-view'); obs.unobserve(e.target); } }),
+      { threshold: 0.08 }
     );
-    elements.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
+    els.forEach((el) => obs.observe(el));
+    return () => obs.disconnect();
   }, [projectTab]);
 
+  // CLI submit
   const handleCliSubmit = (e) => {
     e.preventDefault();
     const cmd = cliInput.trim().toLowerCase();
     if (!cmd) return;
-
-    const newLogs = [...cliLogs, `$ ${cliInput.trim()}`];
-
+    const logs = [...cliLogs, `$ ${cliInput.trim()}`];
     if (cmd === 'help') {
-      newLogs.push(
-        'Available commands:',
-        '  cat resume    - View summary resume details',
-        '  experience    - View UBS internship experience',
-        '  projects      - List key projects',
-        '  skills        - List technical skills',
-        '  leadership    - View WLUG leadership details',
-        '  achievements  - View awards and achievements',
-        '  contact       - View contact info',
-        '  theme <name>  - Switch theme (cyber, matrix, amber, synthwave)',
-        '  clear         - Clear terminal screen',
-        '  exit          - Close terminal'
-      );
+      logs.push('Commands: cat resume | experience | projects | skills | leadership | achievements | contact | clear | exit');
     } else if (cmd === 'cat resume' || cmd === 'resume') {
-      newLogs.push(
-        'Rameshwari Rajendra Satpute',
-        '• Education: B.Tech CSE @ Walchand College of Engg (CGPA: 8.69/10)',
-        '• Experience: Software Engineering Intern @ UBS, Pune (Jun 2026 – Jul 2026)',
-        '• Projects: GoProxyX (Go/Redis), DSV (Python/CLI), Movie Booking Site',
-        '• LeetCode: 750+ Solved, Rating 1745 (Top 10%)',
-        '• Leadership: Main Program Director @ WLUG'
-      );
+      logs.push('Rameshwari Rajendra Satpute', '• B.Tech CSE @ WCE Sangli (CGPA 8.69)', '• SWE Intern @ UBS Pune (Jun–Jul 2026)', '• GoProxyX · DSV · Movie Booking Site', '• LeetCode 750+, Rating 1745 (Top 10%)', '• WLUG Main Program Director');
     } else if (cmd === 'experience') {
-      newLogs.push(
-        'UBS, Pune — Software Engineering Intern (Jun 2026 – Jul 2026)',
-        '• Refactored & developed scalable REST APIs in Java using Spring Boot (controller-service-repository).',
-        '• Wrote unit/integration tests with JUnit & Mockito (97% code coverage).',
-        '• Optimized production data-service endpoints in Agile/Scrum with CI/CD delivery.'
-      );
+      logs.push('UBS, Pune — SWE Intern (Jun–Jul 2026)', '• Spring Boot REST APIs (controller-service-repo pattern)', '• 97% test coverage via JUnit & Mockito', '• Agile/Scrum, CI/CD delivery');
     } else if (cmd === 'projects') {
-      newLogs.push(
-        '1. GoProxyX — API Gateway & Reverse Proxy (Go, Redis, Docker, JWT)',
-        '2. DSV — Dataset Versioning System (Python, CLI, ML Experiment Tracking)',
-        '3. Movie Booking Site — Full-Stack Booking Platform (React, Node, Express, MongoDB)'
-      );
+      logs.push('1. GoProxyX — API Gateway (Go, Redis, Docker, JWT)', '2. DSV — Dataset Versioning (Python, CLI)', '3. Movie Booking Site (React, Node, Express, MongoDB)');
     } else if (cmd === 'skills') {
-      newLogs.push(
-        'Languages: Java, C++, JavaScript, Python, Go, SQL',
-        'Backend: Spring Boot, Node.js, Express.js, REST APIs, Microservices, Redis',
-        'Frontend: HTML5, CSS3, React.js, EJS',
-        'Databases: MongoDB, MySQL, PostgreSQL',
-        'Tools: Git, GitHub, Linux, Docker, Firebase'
-      );
+      logs.push('Languages: Java, C++, JS, Python, Go, SQL', 'Backend: Spring Boot, Node.js, Express.js, REST, Redis', 'Frontend: HTML5, CSS3, React.js', 'DB: MongoDB, MySQL, PostgreSQL', 'Tools: Git, Docker, Linux');
     } else if (cmd === 'leadership') {
-      newLogs.push(
-        'Main Program Director, Walchand Linux Users\' Group (WLUG)',
-        '• Speaker at Metamorphosis 2k26 (Golang & Docker, 180+ participants)',
-        '• Speaker at LinuxDiary 5.0 & coordinator of 3 flagship events',
-        '• Featured on FOSS FILES Season 6 (Anycast & DNS routing)'
-      );
+      logs.push("Main Program Director, WLUG (May 2025–Present)", '• Metamorphosis 2k26 — Golang session (180+ attendees)', '• LinuxDiary 5.0 speaker + 5 workshops', '• FOSS FILES S6: Anycast & DNS routing');
     } else if (cmd === 'achievements') {
-      newLogs.push(
-        '• AWS Educate — Introduction to Cloud 101 certification badge',
-        '• 1st Place: WCE ACM Hackathon 2025 (Novice Track)',
-        '• 1st Place: TechFusion CodeDuet 2025',
-        '• Finalist: WCE ACM Hackathon 2026 (Expert Track) for DSV',
-        '• Top 450: ICPC AlgoQueen 2025'
-      );
+      logs.push('• AWS Educate Cloud 101', '• 1st Place WCE ACM 2025', '• 1st Place TechFusion CodeDuet 2025', '• Finalist WCE ACM 2026 (Expert Track)', '• Top 450 ICPC AlgoQueen 2025');
     } else if (cmd === 'contact') {
-      newLogs.push(
-        'Email: rameshwaris1112@gmail.com',
-        'Phone: +91 7875743747',
-        'LinkedIn: https://www.linkedin.com/in/rameshwari-satpute-8068322a6/',
-        'GitHub: https://github.com/RameshwariS',
-        'LeetCode: https://leetcode.com/u/shrutisatpute1112/'
-      );
-    } else if (cmd.startsWith('theme ')) {
-      const t = cmd.split(' ')[1];
-      const valid = {
-        cyber: 'cyber-neon',
-        matrix: 'matrix-green',
-        amber: 'amber-crt',
-        synthwave: 'synthwave',
-      };
-      if (valid[t]) {
-        setTheme(valid[t]);
-        newLogs.push(`Theme changed to ${valid[t]}`);
-      } else {
-        newLogs.push('Available: cyber, matrix, amber, synthwave');
-      }
+      logs.push(`Email: ${profileLinks.email}`, `Phone: ${profileLinks.phone}`, `LinkedIn: ${profileLinks.linkedin}`, `GitHub: ${profileLinks.github}`);
     } else if (cmd === 'clear') {
-      setCliLogs([]);
-      setCliInput('');
-      return;
+      setCliLogs([]); setCliInput(''); return;
     } else if (cmd === 'exit') {
-      setCliOpen(false);
-      setCliInput('');
-      return;
+      setCliOpen(false); setCliInput(''); return;
     } else {
-      newLogs.push(`Unknown command: "${cmd}". Type "help" for a list of commands.`);
+      logs.push(`Unknown: "${cmd}". Type "help" for commands.`);
     }
-
-    setCliLogs(newLogs);
+    setCliLogs(logs);
     setCliInput('');
   };
 
   return (
-    <div className={`app-shell ${scanlines ? 'has-scanlines' : ''}`}>
-      {/* Background Ambience */}
+    <div className="app-shell">
+      {/* Background */}
       <div className="bg-grid" aria-hidden="true" />
-      <div className="bg-perspective" aria-hidden="true">
-        <div className="perspective-plane" />
-      </div>
       <div className="bg-glow" aria-hidden="true" />
-
-      {/* Floating Retro Particles */}
       <div className="particles-layer" aria-hidden="true">
-        {particles.map((i) => (
-          <span key={i} className="particle" />
-        ))}
+        {particles.map((i) => <span key={i} className="particle" />)}
       </div>
 
-      {scanlines && <div className="scanlines-layer" aria-hidden="true" />}
-
-      {/* Top Navbar / HUD */}
+      {/* Navbar */}
       <nav className="top-nav">
-        <div className="nav-title">
+        <div className="nav-brand">
           <span className="live-dot-wrap">
             <span className="live-dot" />
             <span className="live-ring" />
           </span>
-          <span className="brand-text">RAMESHWARI SATPUTE</span>
-          <span className="nav-sep">/</span>
-          <span className="nav-role">PORTFOLIO</span>
+          <span className="brand-name">Rameshwari Satpute</span>
+          <span className="brand-sep">/</span>
+          <span className="brand-role">Portfolio</span>
         </div>
-
-        <div className="nav-controls">
-          <button
-            className="control-btn"
-            onClick={() => setScanlines(!scanlines)}
-            title="Toggle CRT scanline overlay"
-          >
-            CRT: {scanlines ? 'ON' : 'OFF'}
+        <div className="nav-actions">
+          <button className="nav-btn cli-btn" onClick={() => setCliOpen(!cliOpen)} title="Open terminal (press `)">
+            &gt;_ Terminal
           </button>
-
-          <button
-            className="control-btn cli-btn"
-            onClick={() => setCliOpen(!cliOpen)}
-            title="Open terminal CLI (press `)"
-          >
-            &gt;_ CLI
-          </button>
-
-          <div className="theme-toggle">
-            <button
-              className={`theme-btn ${theme === 'cyber-neon' ? 'active' : ''}`}
-              onClick={() => setTheme('cyber-neon')}
-            >
-              Cyber
-            </button>
-            <button
-              className={`theme-btn ${theme === 'matrix-green' ? 'active' : ''}`}
-              onClick={() => setTheme('matrix-green')}
-            >
-              Matrix
-            </button>
-            <button
-              className={`theme-btn ${theme === 'amber-crt' ? 'active' : ''}`}
-              onClick={() => setTheme('amber-crt')}
-            >
-              Amber
-            </button>
-            <button
-              className={`theme-btn ${theme === 'synthwave' ? 'active' : ''}`}
-              onClick={() => setTheme('synthwave')}
-            >
-              Synth
-            </button>
-          </div>
         </div>
       </nav>
 
       <main className="main-content">
-        {/* HERO WINDOW */}
-        <section className="window hero-window reveal">
-          <div className="window-bar">
-            <div className="window-dots">
-              <span className="dot red" />
-              <span className="dot yellow" />
-              <span className="dot green" />
+
+        {/* HERO */}
+        <section className="card reveal">
+          <div className="card-bar">
+            <div className="win-dots">
+              <span className="dot dot-r" /><span className="dot dot-y" /><span className="dot dot-g" />
             </div>
-            <span className="bar-title">about.txt</span>
-            <span className="bar-status">STATUS: AVAILABLE</span>
+            <span className="card-bar-title">about.txt</span>
+            <span className="bar-badge">Available</span>
           </div>
-
-          <div className="window-inner hero-inner">
-            <h1 className="hero-name glitch-hover" data-text="Rameshwari Rajendra Satpute">
-              Rameshwari Rajendra Satpute
-            </h1>
-
-            <div className="typing-container">
-              <span className="typing-prompt">&gt;</span>
-              <span className="typing-text">{typedText}</span>
-              <span className="typing-caret" />
+          <div className="card-body hero-body">
+            <h1 className="hero-name">Rameshwari Rajendra Satpute</h1>
+            <div className="typing-wrap">
+              <span className="typing-gt">&gt;</span>
+              <span className="typed-text">{typedText}</span>
+              <span className="caret" />
             </div>
-
             <p className="hero-summary">
-              B.Tech Computer Science student at <strong>Walchand College of Engineering</strong> with industry experience
-              at <strong>UBS</strong> developing modular Spring Boot REST APIs with 97% test coverage. Experienced in building
-              distributed backend services, Go/Redis microservices, and leading 180+ developers as Main Program Director at WLUG.
+              B.Tech Computer Science student at <strong>Walchand College of Engineering</strong> with industry
+              experience at <strong>UBS</strong> building modular Spring Boot REST APIs with 97% test coverage.
+              Experienced in distributed backend services, Go/Redis microservices, and leading open-source
+              community events as Main Program Director at WLUG.
             </p>
 
-            {/* Quick Metrics Bar with Animated Meters */}
-            <div className="metrics-row">
-              <div className="metric-box">
-                <span className="metric-title">CGPA</span>
-                <strong className="metric-data accent">8.69 / 10</strong>
-                <div className="metric-meter">
-                  <div className="meter-fill" style={{ width: '86.9%' }} />
-                </div>
+            <div className="metric-row">
+              <div className="metric-card">
+                <span className="metric-label">CGPA</span>
+                <strong className="metric-value hi">8.69 / 10</strong>
+                <div className="metric-bar"><div className="metric-fill" style={{ width: '86.9%' }} /></div>
                 <span className="metric-sub">Walchand College of Engg</span>
               </div>
-              <div className="metric-box">
-                <span className="metric-title">EXPERIENCE</span>
-                <strong className="metric-data">SWE Intern</strong>
-                <div className="metric-meter">
-                  <div className="meter-fill" style={{ width: '97%' }} />
-                </div>
-                <span className="metric-sub">UBS, Pune (Summer 2026)</span>
+              <div className="metric-card">
+                <span className="metric-label">EXPERIENCE</span>
+                <strong className="metric-value">SWE Intern</strong>
+                <div className="metric-bar"><div className="metric-fill" style={{ width: '97%' }} /></div>
+                <span className="metric-sub">UBS, Pune · Summer 2026</span>
               </div>
-              <div className="metric-box">
-                <span className="metric-title">LEETCODE</span>
-                <strong className="metric-data accent">750+ Solved</strong>
-                <div className="metric-meter">
-                  <div className="meter-fill" style={{ width: '88%' }} />
-                </div>
-                <span className="metric-sub">Rating: 1745(Highest) (Top 10%)</span>
+              <div className="metric-card">
+                <span className="metric-label">LEETCODE</span>
+                <strong className="metric-value hi">750+ Solved</strong>
+                <div className="metric-bar"><div className="metric-fill" style={{ width: '88%' }} /></div>
+                <span className="metric-sub">Rating 1745 · Top 10%</span>
               </div>
-             
             </div>
 
-            {/* Contact & Profile Links */}
             <div className="links-row">
-              <a href={`mailto:${profileLinks.email}`} className="btn btn-primary">
-                Email
-              </a>
-              <a href={`tel:${profileLinks.phone}`} className="btn">
-                Phone
-              </a>
-              <a href={profileLinks.github} target="_blank" rel="noreferrer" className="btn">
-                GitHub
-              </a>
-              <a href={profileLinks.linkedin} target="_blank" rel="noreferrer" className="btn">
-                LinkedIn
-              </a>
-              <a href={profileLinks.leetcode} target="_blank" rel="noreferrer" className="btn">
-                LeetCode
-              </a>
-              <a href={profileLinks.codolio} target="_blank" rel="noreferrer" className="btn">
-                Codolio
-              </a>
+              <a href={`mailto:${profileLinks.email}`} className="btn btn-primary">Email</a>
+              <a href={`tel:${profileLinks.phone}`} className="btn">Phone</a>
+              <a href={profileLinks.github} target="_blank" rel="noreferrer" className="btn">GitHub</a>
+              <a href={profileLinks.linkedin} target="_blank" rel="noreferrer" className="btn">LinkedIn</a>
+              <a href={profileLinks.leetcode} target="_blank" rel="noreferrer" className="btn">LeetCode</a>
+              <a href={profileLinks.codolio} target="_blank" rel="noreferrer" className="btn">Codolio</a>
             </div>
           </div>
         </section>
 
-        {/* MARQUEE BANNER */}
-        <div className="ticker-container" aria-hidden="true">
+        {/* TICKER */}
+        <div className="ticker" aria-hidden="true">
           <div className="ticker-track">
-            <span>Java</span>
-            <span className="sep">•</span>
-            <span>Spring Boot</span>
-            <span className="sep">•</span>
-            <span>Go</span>
-            <span className="sep">•</span>
-            <span>Redis</span>
-            <span className="sep">•</span>
-            <span>Docker</span>
-            <span className="sep">•</span>
-            <span>React.js</span>
-            <span className="sep">•</span>
-            <span>Node.js</span>
-            <span className="sep">•</span>
-            <span>Express.js</span>
-            <span className="sep">•</span>
-            <span>MongoDB</span>
-            <span className="sep">•</span>
-            <span>Python</span>
-            <span className="sep">•</span>
-            <span>Linux</span>
-            <span className="sep">•</span>
-            <span>REST APIs</span>
-            <span className="sep">•</span>
-            <span>Java</span>
-            <span className="sep">•</span>
-            <span>Spring Boot</span>
-            <span className="sep">•</span>
-            <span>Go</span>
-            <span className="sep">•</span>
-            <span>Redis</span>
-            <span className="sep">•</span>
-            <span>Docker</span>
-            <span className="sep">•</span>
-            <span>React.js</span>
-            <span className="sep">•</span>
-            <span>Node.js</span>
-            <span className="sep">•</span>
-            <span>Express.js</span>
-            <span className="sep">•</span>
-            <span>MongoDB</span>
-            <span className="sep">•</span>
-            <span>Python</span>
-            <span className="sep">•</span>
-            <span>Linux</span>
-            <span className="sep">•</span>
-            <span>REST APIs</span>
+            {['Java','Spring Boot','Go','Redis','Docker','React.js','Node.js','Express.js','MongoDB','Python','Linux','REST APIs','JUnit','Mockito','CI/CD','Git',
+              'Java','Spring Boot','Go','Redis','Docker','React.js','Node.js','Express.js','MongoDB','Python','Linux','REST APIs'].map((t, i) => (
+              <span key={i} className={i % 2 === 1 ? 'tick-sep' : ''}>{t}</span>
+            ))}
           </div>
         </div>
 
-        {/* EXPERIENCE SECTION */}
-        <section className="window reveal">
-          <div className="window-bar">
-            <div className="window-dots">
-              <span className="dot red" />
-              <span className="dot yellow" />
-              <span className="dot green" />
+        {/* EXPERIENCE */}
+        <section className="card reveal">
+          <div className="card-bar">
+            <div className="win-dots">
+              <span className="dot dot-r" /><span className="dot dot-y" /><span className="dot dot-g" />
             </div>
-            <span className="bar-title">experience.log</span>
+            <span className="card-bar-title">experience.log</span>
           </div>
-
-          <div className="window-inner">
-            <div className="exp-top">
+          <div className="card-body">
+            <div className="exp-header">
               <div>
-                <h2 className="section-heading">{experience.role}</h2>
-                <h3 className="company-heading">{experience.company}</h3>
+                <h2 className="sec-title">{experience.role}</h2>
+                <h3 className="sec-company">{experience.company}</h3>
               </div>
               <div className="exp-meta">
-                <span className="meta-badge">{experience.period}</span>
+                <span className="badge">{experience.period}</span>
                 <span className="meta-loc">{experience.location}</span>
               </div>
             </div>
-
             <div className="tag-list">
-              {experience.stack.map((t) => (
-                <span key={t} className="tag">
-                  {t}
-                </span>
-              ))}
+              {experience.stack.map((t) => <span key={t} className="tag">{t}</span>)}
             </div>
-
             <ul className="bullet-list">
-              {experience.bullets.map((b, i) => (
-                <li key={i}>{b}</li>
-              ))}
+              {experience.bullets.map((b, i) => <li key={i}>{b}</li>)}
             </ul>
           </div>
         </section>
 
-        {/* PROJECTS SECTION */}
-        <section className="window reveal">
-          <div className="window-bar">
-            <div className="window-dots">
-              <span className="dot red" />
-              <span className="dot yellow" />
-              <span className="dot green" />
+        {/* PROJECTS */}
+        <section className="card reveal">
+          <div className="card-bar">
+            <div className="win-dots">
+              <span className="dot dot-r" /><span className="dot dot-y" /><span className="dot dot-g" />
             </div>
-            <span className="bar-title">projects/</span>
+            <span className="card-bar-title">projects/</span>
             <div className="tab-group">
-              <button
-                className={`tab-link ${projectTab === 'featured' ? 'active' : ''}`}
-                onClick={() => setProjectTab('featured')}
-              >
-                Featured Projects
-              </button>
-              <button
-                className={`tab-link ${projectTab === 'all' ? 'active' : ''}`}
-                onClick={() => setProjectTab('all')}
-              >
-                All Projects
-              </button>
+              <button className={`tab ${projectTab === 'featured' ? 'tab-active' : ''}`} onClick={() => setProjectTab('featured')}>Featured</button>
+              <button className={`tab ${projectTab === 'all' ? 'tab-active' : ''}`} onClick={() => setProjectTab('all')}>All</button>
             </div>
           </div>
-
-          <div className="window-inner">
-            <div className="cards-grid">
+          <div className="card-body">
+            <div className="proj-grid">
               {flagshipProjects.map((p) => (
-                <div key={p.name} className="project-card">
-                  <div className="card-beam" />
-                  <div className="card-top">
-                    <h3 className="project-title">{p.name}</h3>
+                <div key={p.name} className="proj-card">
+                  <div className="beam" />
+                  <div className="proj-top">
+                    <h3 className="proj-name">{p.name}</h3>
                     {p.badge && <span className="small-badge">{p.badge}</span>}
                   </div>
-                  <p className="project-stack">{p.stack}</p>
-
-                  <div className="card-links">
-                    {p.github && (
-                      <a href={p.github} target="_blank" rel="noreferrer" className="btn btn-sm">
-                        GitHub
-                      </a>
-                    )}
-                    {p.live && (
-                      <a href={p.live} target="_blank" rel="noreferrer" className="btn btn-sm btn-primary">
-                        Live Demo
-                      </a>
-                    )}
+                  <p className="proj-stack">{p.stack}</p>
+                  <div className="proj-links">
+                    {p.github && <a href={p.github} target="_blank" rel="noreferrer" className="btn btn-sm">GitHub</a>}
+                    {p.live && <a href={p.live} target="_blank" rel="noreferrer" className="btn btn-sm btn-primary">Live</a>}
                   </div>
-
-                  <ul className="bullet-list project-bullets">
-                    {p.bullets.map((b, i) => (
-                      <li key={i}>{b}</li>
-                    ))}
+                  <ul className="bullet-list proj-bullets">
+                    {p.bullets.map((b, i) => <li key={i}>{b}</li>)}
                   </ul>
                 </div>
               ))}
-
-              {projectTab === 'all' &&
-                otherProjects.map((p) => (
-                  <div key={p.name} className="project-card">
-                    <div className="card-beam" />
-                    <div className="card-top">
-                      <h3 className="project-title">{p.name}</h3>
-                      {p.badge && <span className="small-badge">{p.badge}</span>}
-                    </div>
-                    <p className="project-stack">{p.stack}</p>
-
-                    <div className="card-links">
-                      {p.github && (
-                        <a href={p.github} target="_blank" rel="noreferrer" className="btn btn-sm">
-                          GitHub
-                        </a>
-                      )}
-                      {p.live && (
-                        <a href={p.live} target="_blank" rel="noreferrer" className="btn btn-sm btn-primary">
-                          Live Demo
-                        </a>
-                      )}
-                    </div>
-
-                    <ul className="bullet-list project-bullets">
-                      {p.bullets.map((b, i) => (
-                        <li key={i}>{b}</li>
-                      ))}
-                    </ul>
+              {projectTab === 'all' && otherProjects.map((p) => (
+                <div key={p.name} className="proj-card">
+                  <div className="beam" />
+                  <div className="proj-top">
+                    <h3 className="proj-name">{p.name}</h3>
+                    {p.badge && <span className="small-badge">{p.badge}</span>}
                   </div>
-                ))}
+                  <p className="proj-stack">{p.stack}</p>
+                  <div className="proj-links">
+                    {p.github && <a href={p.github} target="_blank" rel="noreferrer" className="btn btn-sm">GitHub</a>}
+                    {p.live && <a href={p.live} target="_blank" rel="noreferrer" className="btn btn-sm btn-primary">Live</a>}
+                  </div>
+                  <ul className="bullet-list proj-bullets">
+                    {p.bullets.map((b, i) => <li key={i}>{b}</li>)}
+                  </ul>
+                </div>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* TECHNICAL SKILLS */}
-        <section className="window reveal">
-          <div className="window-bar">
-            <div className="window-dots">
-              <span className="dot red" />
-              <span className="dot yellow" />
-              <span className="dot green" />
+        {/* SKILLS */}
+        <section className="card reveal">
+          <div className="card-bar">
+            <div className="win-dots">
+              <span className="dot dot-r" /><span className="dot dot-y" /><span className="dot dot-g" />
             </div>
-            <span className="bar-title">skills.json</span>
+            <span className="card-bar-title">skills.json</span>
           </div>
-
-          <div className="window-inner">
+          <div className="card-body">
             <div className="skills-grid">
               {skillCategories.map((cat) => (
                 <div key={cat.title} className="skill-group">
-                  <h3 className="skill-cat-title">{cat.title}</h3>
+                  <h3 className="skill-title">{cat.title}</h3>
                   <div className="tag-list">
-                    {cat.items.map((item) => (
-                      <span key={item} className="tag">
-                        {item}
-                      </span>
-                    ))}
+                    {cat.items.map((item) => <span key={item} className="tag">{item}</span>)}
                   </div>
                 </div>
               ))}
@@ -761,105 +448,74 @@ function App() {
           </div>
         </section>
 
-        {/* LEADERSHIP SECTION */}
-        <section className="window reveal">
-          <div className="window-bar">
-            <div className="window-dots">
-              <span className="dot red" />
-              <span className="dot yellow" />
-              <span className="dot green" />
+        {/* LEADERSHIP */}
+        <section className="card reveal">
+          <div className="card-bar">
+            <div className="win-dots">
+              <span className="dot dot-r" /><span className="dot dot-y" /><span className="dot dot-g" />
             </div>
-            <span className="bar-title">leadership.md</span>
+            <span className="card-bar-title">leadership.md</span>
           </div>
-
-          <div className="window-inner">
-            <div className="exp-top">
+          <div className="card-body">
+            <div className="exp-header">
               <div>
-                <h2 className="section-heading">{leadership.role}</h2>
-                <h3 className="company-heading">{leadership.org}</h3>
+                <h2 className="sec-title">{leadership.role}</h2>
+                <h3 className="sec-company">{leadership.org}</h3>
               </div>
-              <span className="meta-badge">{leadership.period}</span>
+              <span className="badge">{leadership.period}</span>
             </div>
-
             <ul className="bullet-list">
-              {leadership.bullets.map((b, i) => (
-                <li key={i}>{b}</li>
-              ))}
+              {leadership.bullets.map((b, i) => <li key={i}>{b}</li>)}
             </ul>
           </div>
         </section>
 
-        {/* CODING PROFILE & HEATMAPS */}
-        <section className="window reveal">
-          <div className="window-bar">
-            <div className="window-dots">
-              <span className="dot red" />
-              <span className="dot yellow" />
-              <span className="dot green" />
+        {/* CODING PROFILE */}
+        <section className="card reveal">
+          <div className="card-bar">
+            <div className="win-dots">
+              <span className="dot dot-r" /><span className="dot dot-y" /><span className="dot dot-g" />
             </div>
-            <span className="bar-title">coding-profile.log</span>
+            <span className="card-bar-title">coding-profile.log</span>
           </div>
-
-          <div className="window-inner">
-            <div className="metrics-row coding-metrics">
-              <div className="metric-box">
-                <span className="metric-title">LEETCODE</span>
-                <strong className="metric-data accent">750+ Solved</strong>
+          <div className="card-body">
+            <div className="metric-row" style={{ marginBottom: '20px' }}>
+              <div className="metric-card">
+                <span className="metric-label">LEETCODE</span>
+                <strong className="metric-value hi">750+ Solved</strong>
                 <span className="metric-sub">Rating: 1745 (Top 10%)</span>
-                <a href={profileLinks.leetcode} target="_blank" rel="noreferrer" className="text-link">
-                  View LeetCode Profile ↗
-                </a>
+                <a href={profileLinks.leetcode} target="_blank" rel="noreferrer" className="text-link">View Profile →</a>
               </div>
-              <div className="metric-box">
-                <span className="metric-title">CODOLIO</span>
-                <strong className="metric-data">Competitive Profile</strong>
+              <div className="metric-card">
+                <span className="metric-label">CODOLIO</span>
+                <strong className="metric-value">Competitive Profile</strong>
                 <span className="metric-sub">Verified problem record</span>
-                <a href={profileLinks.codolio} target="_blank" rel="noreferrer" className="text-link">
-                  View Codolio Profile ↗
-                </a>
+                <a href={profileLinks.codolio} target="_blank" rel="noreferrer" className="text-link">View Profile →</a>
               </div>
-              <div className="metric-box">
-                <span className="metric-title">GITHUB</span>
-                <strong className="metric-data accent">Repositories</strong>
+              <div className="metric-card">
+                <span className="metric-label">GITHUB</span>
+                <strong className="metric-value hi">Repositories</strong>
                 <span className="metric-sub">Open source & microservices</span>
-                <a href={profileLinks.github} target="_blank" rel="noreferrer" className="text-link">
-                  View GitHub Profile ↗
-                </a>
+                <a href={profileLinks.github} target="_blank" rel="noreferrer" className="text-link">View Profile →</a>
               </div>
             </div>
-
-            <div className="heatmaps-container">
+            <div className="heatmap-row">
               <div className="heatmap-card">
-                <div className="heatmap-title-row">
+                <div className="heatmap-title">
                   <span>GitHub Contributions</span>
-                  <a href={profileLinks.github} target="_blank" rel="noreferrer" className="text-link">
-                    @RameshwariS
-                  </a>
+                  <a href={profileLinks.github} target="_blank" rel="noreferrer" className="text-link">@RameshwariS</a>
                 </div>
-                <div className="chart-wrapper">
-                  <img
-                    src="https://ghchart.rshah.org/00f0ff/RameshwariS"
-                    alt="GitHub Contributions"
-                    className="chart-img"
-                    loading="lazy"
-                  />
+                <div className="chart-wrap">
+                  <img src="https://ghchart.rshah.org/2563eb/RameshwariS" alt="GitHub Contributions" className="chart-img" loading="lazy" />
                 </div>
               </div>
-
               <div className="heatmap-card">
-                <div className="heatmap-title-row">
+                <div className="heatmap-title">
                   <span>LeetCode Activity</span>
-                  <a href={profileLinks.leetcode} target="_blank" rel="noreferrer" className="text-link">
-                    @shrutisatpute1112
-                  </a>
+                  <a href={profileLinks.leetcode} target="_blank" rel="noreferrer" className="text-link">@shrutisatpute1112</a>
                 </div>
-                <div className="chart-wrapper">
-                  <img
-                    src="https://leetcard.jacoblin.cool/shrutisatpute1112?theme=dark&font=Share%20Tech%20Mono&ext=heatmap"
-                    alt="LeetCode Heatmap"
-                    className="chart-img"
-                    loading="lazy"
-                  />
+                <div className="chart-wrap">
+                  <img src="https://leetcard.jacoblin.cool/shrutisatpute1112?theme=light&font=Share%20Tech%20Mono&ext=heatmap" alt="LeetCode Heatmap" className="chart-img" loading="lazy" />
                 </div>
               </div>
             </div>
@@ -867,96 +523,78 @@ function App() {
         </section>
 
         {/* ACHIEVEMENTS */}
-        <section className="window reveal">
-          <div className="window-bar">
-            <div className="window-dots">
-              <span className="dot red" />
-              <span className="dot yellow" />
-              <span className="dot green" />
+        <section className="card reveal">
+          <div className="card-bar">
+            <div className="win-dots">
+              <span className="dot dot-r" /><span className="dot dot-y" /><span className="dot dot-g" />
             </div>
-            <span className="bar-title">achievements.txt</span>
+            <span className="card-bar-title">achievements.txt</span>
           </div>
-
-          <div className="window-inner">
+          <div className="card-body">
             <ul className="bullet-list">
-              {achievements.map((item, i) => (
-                <li key={i}>{item}</li>
-              ))}
+              {achievements.map((item, i) => <li key={i}>{item}</li>)}
             </ul>
           </div>
         </section>
 
         {/* EDUCATION */}
-        <section className="window reveal">
-          <div className="window-bar">
-            <div className="window-dots">
-              <span className="dot red" />
-              <span className="dot yellow" />
-              <span className="dot green" />
+        <section className="card reveal">
+          <div className="card-bar">
+            <div className="win-dots">
+              <span className="dot dot-r" /><span className="dot dot-y" /><span className="dot dot-g" />
             </div>
-            <span className="bar-title">education.txt</span>
+            <span className="card-bar-title">education.txt</span>
           </div>
-
-          <div className="window-inner">
-            <div className="edu-block">
-              <div className="exp-top">
-                <div>
-                  <h2 className="section-heading">{education.degree}</h2>
-                  <h3 className="company-heading">{education.college}</h3>
-                </div>
-                <div className="exp-meta">
-                  <span className="meta-badge">{education.period}</span>
-                  <span className="meta-badge accent-badge">CGPA: {education.cgpa}</span>
-                </div>
+          <div className="card-body">
+            <div className="exp-header">
+              <div>
+                <h2 className="sec-title">{education.degree}</h2>
+                <h3 className="sec-company">{education.college}</h3>
               </div>
-
-              <div className="secondary-edu">
-                {education.secondary.map((s, i) => (
-                  <div key={i} className="sec-edu-item">
-                    <strong>{s.name}</strong> ({s.year}) — <span>{s.details}</span>
-                  </div>
-                ))}
+              <div className="exp-meta">
+                <span className="badge">{education.period}</span>
+                <span className="badge badge-hi">CGPA: {education.cgpa}</span>
               </div>
+            </div>
+            <div className="secondary-edu">
+              {education.secondary.map((s, i) => (
+                <div key={i} className="sec-edu-row">
+                  <strong>{s.name}</strong> ({s.year}) — {s.details}
+                </div>
+              ))}
             </div>
           </div>
         </section>
 
         {/* CONTACT */}
-        <section className="window footer-window reveal">
-          <div className="window-bar">
-            <div className="window-dots">
-              <span className="dot red" />
-              <span className="dot yellow" />
-              <span className="dot green" />
+        <section className="card reveal">
+          <div className="card-bar">
+            <div className="win-dots">
+              <span className="dot dot-r" /><span className="dot dot-y" /><span className="dot dot-g" />
             </div>
-            <span className="bar-title">contact.sh</span>
+            <span className="card-bar-title">contact.sh</span>
           </div>
-
-          <div className="window-inner">
-            <h2 className="section-heading">Contact</h2>
-            <p className="contact-subtitle">
-              Feel free to connect for software engineering opportunities, backend development, or collaborations.
-            </p>
-
+          <div className="card-body">
+            <h2 className="sec-title">Contact</h2>
+            <p className="contact-sub">Open to software engineering roles, backend development and collaborations.</p>
             <div className="contact-grid">
               <a href={`mailto:${profileLinks.email}`} className="contact-card">
                 <span className="contact-type">Email</span>
-                <strong className="contact-detail">{profileLinks.email}</strong>
+                <strong className="contact-val">{profileLinks.email}</strong>
               </a>
               <a href={`tel:${profileLinks.phone}`} className="contact-card">
                 <span className="contact-type">Phone</span>
-                <strong className="contact-detail">{profileLinks.phone}</strong>
+                <strong className="contact-val">{profileLinks.phone}</strong>
               </a>
               <a href={profileLinks.linkedin} target="_blank" rel="noreferrer" className="contact-card">
                 <span className="contact-type">LinkedIn</span>
-                <strong className="contact-detail">linkedin.com/in/rameshwari-satpute</strong>
+                <strong className="contact-val">linkedin.com/in/rameshwari-satpute</strong>
               </a>
               <a href={profileLinks.github} target="_blank" rel="noreferrer" className="contact-card">
                 <span className="contact-type">GitHub</span>
-                <strong className="contact-detail">github.com/RameshwariS</strong>
+                <strong className="contact-val">github.com/RameshwariS</strong>
               </a>
             </div>
-
             <div className="footer-bar">
               <span>© {new Date().getFullYear()} Rameshwari Rajendra Satpute</span>
               <span>Walchand College of Engineering, Sangli</span>
@@ -968,28 +606,19 @@ function App() {
       {/* CLI MODAL */}
       {cliOpen && (
         <div className="modal-backdrop" onClick={() => setCliOpen(false)}>
-          <div className="modal-window" onClick={(e) => e.stopPropagation()}>
-            <div className="window-bar">
-              <div className="window-dots">
-                <span className="dot red" onClick={() => setCliOpen(false)} />
-                <span className="dot yellow" />
-                <span className="dot green" />
+          <div className="modal-win" onClick={(e) => e.stopPropagation()}>
+            <div className="card-bar">
+              <div className="win-dots">
+                <span className="dot dot-r" onClick={() => setCliOpen(false)} style={{ cursor: 'pointer' }} />
+                <span className="dot dot-y" /><span className="dot dot-g" />
               </div>
-              <span className="bar-title">terminal.sh</span>
-              <button className="close-btn" onClick={() => setCliOpen(false)}>
-                ✕
-              </button>
+              <span className="card-bar-title">terminal.sh</span>
+              <button className="close-x" onClick={() => setCliOpen(false)}>✕</button>
             </div>
-
             <div className="cli-body">
               <div className="cli-output">
-                {cliLogs.map((log, index) => (
-                  <div key={index} className="cli-line">
-                    {log}
-                  </div>
-                ))}
+                {cliLogs.map((log, i) => <div key={i} className="cli-line">{log}</div>)}
               </div>
-
               <form className="cli-form" onSubmit={handleCliSubmit}>
                 <span className="cli-prompt">&gt;</span>
                 <input
@@ -997,7 +626,7 @@ function App() {
                   className="cli-input"
                   value={cliInput}
                   onChange={(e) => setCliInput(e.target.value)}
-                  placeholder="Type a command (help, cat resume, experience, projects)..."
+                  placeholder="help, cat resume, experience, projects..."
                   autoFocus
                 />
               </form>
@@ -1010,4 +639,3 @@ function App() {
 }
 
 export default App;
-
