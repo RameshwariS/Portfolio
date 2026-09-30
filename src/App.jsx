@@ -506,7 +506,7 @@ function App() {
                   <a href={profileLinks.github} target="_blank" rel="noreferrer" className="text-link">@RameshwariS</a>
                 </div>
                 <div className="chart-wrap">
-                  <img src="https://ghchart.rshah.org/2563eb/RameshwariS" alt="GitHub Contributions" className="chart-img" loading="lazy" />
+                  <img src="https://ghchart.rshah.org/404040/RameshwariS" alt="GitHub Contributions" className="chart-img" loading="lazy" />
                 </div>
               </div>
               <div className="heatmap-card">
@@ -515,7 +515,7 @@ function App() {
                   <a href={profileLinks.leetcode} target="_blank" rel="noreferrer" className="text-link">@shrutisatpute1112</a>
                 </div>
                 <div className="chart-wrap">
-                  <img src="https://leetcard.jacoblin.cool/shrutisatpute1112?theme=light&font=Share%20Tech%20Mono&ext=heatmap" alt="LeetCode Heatmap" className="chart-img" loading="lazy" />
+                  <img src="https://leetcard.jacoblin.cool/shrutisatpute1112?theme=light&font=Inter&ext=heatmap" alt="LeetCode Heatmap" className="chart-img" loading="lazy" />
                 </div>
               </div>
             </div>
