@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 // ── Resume Data ──────────────────────────────────────────────────────────
 const experience = {
@@ -144,496 +144,379 @@ const profileLinks = {
   codolio: 'https://codolio.com/profile/shruti1',
 };
 
-const typingPhrases = [
-  'Software Engineering Intern at UBS.',
-  'B.Tech CSE @ Walchand College of Engineering.',
-  'Main Program Director at WLUG.',
-  '750+ LeetCode problems solved (Rating 1745, Top 10%).',
-  'Building backend APIs, distributed systems & web apps.',
+const navItems = [
+  { id: 'about', label: 'About' },
+  { id: 'work', label: 'Work' },
+  { id: 'projects', label: 'Projects' },
+  { id: 'skills', label: 'Skills' },
+  { id: 'contact', label: 'Contact' },
 ];
 
-// ── App ──────────────────────────────────────────────────────────────────
+const rotatingWords = ['backends', 'REST APIs', 'gateways', 'web apps', 'dev tools'];
+
+const numbers = [
+  { value: 8.69, decimals: 2, suffix: '', label: 'CGPA, B.Tech CSE' },
+  { value: 750, decimals: 0, suffix: '+', label: 'LeetCode problems' },
+  { value: 97, decimals: 0, suffix: '%', label: 'Test coverage at UBS' },
+  { value: 180, decimals: 0, suffix: '+', label: 'People at my Go talk' },
+];
+
+const aboutText =
+  "I'm a Computer Science student at Walchand College of Engineering who likes the unglamorous parts of software: clean service boundaries, honest tests and APIs that keep working under load. I interned at UBS on Spring Boot services, build Go and Redis tooling on the side, and run open-source events at WLUG.";
+
+const allProjects = [...flagshipProjects, ...otherProjects];
+
+function Arrow({ size = 14 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M7 17 17 7M8 7h9v9" />
+    </svg>
+  );
+}
+
+function SplitWords({ text, delay = 0, step = 70 }) {
+  return text.split(' ').map((w, i) => (
+    <span className="mask" key={`${w}-${i}`}>
+      <span className="word" style={{ animationDelay: `${delay + i * step}ms` }}>{w}</span>{' '}
+    </span>
+  ));
+}
+
+function CountUp({ value, decimals, suffix }) {
+  const ref = useRef(null);
+  const [n, setN] = useState(0);
+  useEffect(() => {
+    const el = ref.current;
+    let raf;
+    const obs = new IntersectionObserver(([e]) => {
+      if (!e.isIntersecting) return;
+      obs.disconnect();
+      const start = performance.now();
+      const tick = (t) => {
+        const p = Math.min((t - start) / 1400, 1);
+        setN(value * (1 - Math.pow(1 - p, 3)));
+        if (p < 1) raf = requestAnimationFrame(tick);
+      };
+      raf = requestAnimationFrame(tick);
+    }, { threshold: 0.5 });
+    obs.observe(el);
+    return () => { obs.disconnect(); cancelAnimationFrame(raf); };
+  }, [value]);
+  return <span ref={ref}>{n.toFixed(decimals)}{suffix}</span>;
+}
+
+function SectionLabel({ index, children }) {
+  return (
+    <div className="label reveal">
+      <span className="label-idx">({index})</span>
+      <span>{children}</span>
+    </div>
+  );
+}
+
 function App() {
-  const [projectTab, setProjectTab] = useState('featured');
-  const [typedText, setTypedText] = useState('');
-  const [phraseIndex, setPhraseIndex] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [cliOpen, setCliOpen] = useState(false);
-  const [cliInput, setCliInput] = useState('');
-  const [cliLogs, setCliLogs] = useState([
-    'Rameshwari Satpute — Portfolio Terminal',
-    'Type "help" to see available commands.',
-  ]);
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light');
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [openProject, setOpenProject] = useState(0);
+  const [openJob, setOpenJob] = useState(0);
+  const [copied, setCopied] = useState(false);
+  const [wordIndex, setWordIndex] = useState(0);
+  const [clock, setClock] = useState('');
+  const aboutRef = useRef(null);
+  const cursorRef = useRef(null);
 
-  const particles = Array.from({ length: 12 }, (_, i) => i);
-
-  // Mouse spotlight
   useEffect(() => {
-    const onMove = (e) => {
-      document.documentElement.style.setProperty('--mx', `${(e.clientX / window.innerWidth) * 100}%`);
-      document.documentElement.style.setProperty('--my', `${(e.clientY / window.innerHeight) * 100}%`);
-    };
-    window.addEventListener('mousemove', onMove);
-    return () => window.removeEventListener('mousemove', onMove);
+    document.documentElement.dataset.theme = theme;
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  useEffect(() => {
+    const id = setInterval(() => setWordIndex((i) => (i + 1) % rotatingWords.length), 2200);
+    return () => clearInterval(id);
   }, []);
 
-  // Typing effect
   useEffect(() => {
-    const phrase = typingPhrases[phraseIndex];
-    const speed = isDeleting ? 22 : 48;
-    const timer = setTimeout(() => {
-      if (!isDeleting) {
-        const next = phrase.slice(0, typedText.length + 1);
-        setTypedText(next);
-        if (next === phrase) setTimeout(() => setIsDeleting(true), 1200);
-      } else {
-        const next = phrase.slice(0, Math.max(typedText.length - 1, 0));
-        setTypedText(next);
-        if (next.length === 0) {
-          setIsDeleting(false);
-          setPhraseIndex((p) => (p + 1) % typingPhrases.length);
-        }
-      }
-    }, speed);
-    return () => clearTimeout(timer);
-  }, [typedText, phraseIndex, isDeleting]);
-
-  // ` key opens CLI
-  useEffect(() => {
-    const onKey = (e) => {
-      if (e.key === '`') { e.preventDefault(); setCliOpen((p) => !p); }
-      if (e.key === 'Escape') setCliOpen(false);
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
+    const fmt = () => new Date().toLocaleTimeString('en-GB', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    setClock(fmt());
+    const id = setInterval(() => setClock(fmt()), 1000);
+    return () => clearInterval(id);
   }, []);
 
-  // Scroll reveals
   useEffect(() => {
-    const els = document.querySelectorAll('.reveal');
     const obs = new IntersectionObserver(
       (entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in-view'); obs.unobserve(e.target); } }),
-      { threshold: 0.08 }
+      { threshold: 0.15 }
     );
-    els.forEach((el) => obs.observe(el));
+    document.querySelectorAll('.reveal').forEach((el) => obs.observe(el));
     return () => obs.disconnect();
-  }, [projectTab]);
+  }, []);
 
-  // CLI submit
-  const handleCliSubmit = (e) => {
-    e.preventDefault();
-    const cmd = cliInput.trim().toLowerCase();
-    if (!cmd) return;
-    const logs = [...cliLogs, `$ ${cliInput.trim()}`];
-    if (cmd === 'help') {
-      logs.push('Commands: cat resume | experience | projects | skills | leadership | achievements | contact | clear | exit');
-    } else if (cmd === 'cat resume' || cmd === 'resume') {
-      logs.push('Rameshwari Rajendra Satpute', '• B.Tech CSE @ WCE Sangli (CGPA 8.69)', '• SWE Intern @ UBS Pune (Jun–Jul 2026)', '• GoProxyX · DSV · Movie Booking Site', '• LeetCode 750+, Rating 1745 (Top 10%)', '• WLUG Main Program Director');
-    } else if (cmd === 'experience') {
-      logs.push('UBS, Pune — SWE Intern (Jun–Jul 2026)', '• Spring Boot REST APIs (controller-service-repo pattern)', '• 97% test coverage via JUnit & Mockito', '• Agile/Scrum, CI/CD delivery');
-    } else if (cmd === 'projects') {
-      logs.push('1. GoProxyX — API Gateway (Go, Redis, Docker, JWT)', '2. DSV — Dataset Versioning (Python, CLI)', '3. Movie Booking Site (React, Node, Express, MongoDB)');
-    } else if (cmd === 'skills') {
-      logs.push('Languages: Java, C++, JS, Python, Go, SQL', 'Backend: Spring Boot, Node.js, Express.js, REST, Redis', 'Frontend: HTML5, CSS3, React.js', 'DB: MongoDB, MySQL, PostgreSQL', 'Tools: Git, Docker, Linux');
-    } else if (cmd === 'leadership') {
-      logs.push("Main Program Director, WLUG (May 2025–Present)", '• Metamorphosis 2k26 — Golang session (180+ attendees)', '• LinuxDiary 5.0 speaker + 5 workshops', '• FOSS FILES S6: Anycast & DNS routing');
-    } else if (cmd === 'achievements') {
-      logs.push('• AWS Educate Cloud 101', '• 1st Place WCE ACM 2025', '• 1st Place TechFusion CodeDuet 2025', '• Finalist WCE ACM 2026 (Expert Track)', '• Top 450 ICPC AlgoQueen 2025');
-    } else if (cmd === 'contact') {
-      logs.push(`Email: ${profileLinks.email}`, `Phone: ${profileLinks.phone}`, `LinkedIn: ${profileLinks.linkedin}`, `GitHub: ${profileLinks.github}`);
-    } else if (cmd === 'clear') {
-      setCliLogs([]); setCliInput(''); return;
-    } else if (cmd === 'exit') {
-      setCliOpen(false); setCliInput(''); return;
-    } else {
-      logs.push(`Unknown: "${cmd}". Type "help" for commands.`);
+  useEffect(() => {
+    const words = aboutRef.current ? [...aboutRef.current.querySelectorAll('span')] : [];
+    const onScroll = () => {
+      const el = aboutRef.current;
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const p = Math.min(Math.max((vh * 0.85 - r.top) / (r.height + vh * 0.35), 0), 1);
+      const lit = Math.round(p * words.length);
+      words.forEach((w, i) => w.classList.toggle('lit', i < lit));
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  useEffect(() => {
+    const dot = cursorRef.current;
+    if (!dot || !window.matchMedia('(pointer: fine)').matches) return;
+    let x = -100, y = -100, cx = -100, cy = -100, raf;
+    const move = (e) => {
+      x = e.clientX; y = e.clientY;
+      dot.classList.toggle('big', !!e.target.closest('a, button'));
+    };
+    const loop = () => {
+      cx += (x - cx) * 0.2; cy += (y - cy) * 0.2;
+      dot.style.transform = `translate(${cx}px, ${cy}px)`;
+      raf = requestAnimationFrame(loop);
+    };
+    window.addEventListener('mousemove', move);
+    raf = requestAnimationFrame(loop);
+    document.body.classList.add('has-cursor');
+    return () => { window.removeEventListener('mousemove', move); cancelAnimationFrame(raf); document.body.classList.remove('has-cursor'); };
+  }, []);
+
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(profileLinks.email);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1800);
+    } catch {
+      window.location.href = `mailto:${profileLinks.email}`;
     }
-    setCliLogs(logs);
-    setCliInput('');
   };
 
-  return (
-    <div className="app-shell">
-      {/* Background */}
-      <div className="bg-grid" aria-hidden="true" />
-      <div className="bg-glow" aria-hidden="true" />
-      <div className="particles-layer" aria-hidden="true">
-        {particles.map((i) => <span key={i} className="particle" />)}
-      </div>
+  const jobs = [
+    { title: experience.role, org: experience.company, period: experience.period, tags: experience.stack, bullets: experience.bullets },
+    { title: leadership.role, org: leadership.org, period: leadership.period, tags: ['Open Source', 'Public Speaking', 'Community'], bullets: leadership.bullets },
+  ];
 
-      {/* Navbar */}
-      <nav className="top-nav">
-        <div className="nav-brand">
-          <span className="live-dot-wrap">
-            <span className="live-dot" />
-            <span className="live-ring" />
-          </span>
-          <span className="brand-name">Rameshwari Satpute</span>
-          <span className="brand-sep">/</span>
-          <span className="brand-role">Portfolio</span>
-        </div>
-        <div className="nav-actions">
-          <button className="nav-btn cli-btn" onClick={() => setCliOpen(!cliOpen)} title="Open terminal (press `)">
-            &gt;_ Terminal
+  const links = [
+    { label: 'GitHub', href: profileLinks.github },
+    { label: 'LinkedIn', href: profileLinks.linkedin },
+    { label: 'LeetCode', href: profileLinks.leetcode },
+    { label: 'Codolio', href: profileLinks.codolio },
+  ];
+
+  return (
+    <div className="page">
+      <div className="cursor" ref={cursorRef} aria-hidden="true" />
+
+      <header className="top">
+        <a href="#home" className="brand" onClick={() => setMenuOpen(false)}>Rameshwari Satpute</a>
+        <nav className={`nav ${menuOpen ? 'open' : ''}`}>
+          {navItems.map((n, i) => (
+            <a key={n.id} href={`#${n.id}`} className="roll" onClick={() => setMenuOpen(false)}>
+              <sup>0{i + 1}</sup><span data-text={n.label}>{n.label}</span>
+            </a>
+          ))}
+        </nav>
+        <div className="top-right">
+          <span className="clock">Pune, IN · {clock}</span>
+          <button className="text-btn" onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')} aria-label="Toggle theme">
+            {theme === 'light' ? 'Dark' : 'Light'}
+          </button>
+          <button className="text-btn menu-btn" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu">
+            {menuOpen ? 'Close' : 'Menu'}
           </button>
         </div>
-      </nav>
+      </header>
 
-      <main className="main-content">
-
-        {/* HERO */}
-        <section className="card reveal">
-          <div className="card-bar">
-            <div className="win-dots">
-              <span className="dot dot-r" /><span className="dot dot-y" /><span className="dot dot-g" />
-            </div>
-            <span className="card-bar-title">about.txt</span>
-            <span className="bar-badge">Available</span>
-          </div>
-          <div className="card-body hero-body">
-            <h1 className="hero-name">Rameshwari Rajendra Satpute</h1>
-            <div className="typing-wrap">
-              <span className="typing-gt">&gt;</span>
-              <span className="typed-text">{typedText}</span>
-              <span className="caret" />
-            </div>
-            <p className="hero-summary">
-              B.Tech Computer Science student at <strong>Walchand College of Engineering</strong> with industry
-              experience at <strong>UBS</strong> building modular Spring Boot REST APIs with 97% test coverage.
-              Experienced in distributed backend services, Go/Redis microservices, and leading open-source
-              community events as Main Program Director at WLUG.
+      <main>
+        <section id="home" className="hero wrap">
+          <p className="hero-kicker"><span className="live-dot" />Available for SDE roles · 2027</p>
+          <h1 className="hero-name">
+            <span className="line"><SplitWords text="Rameshwari" /></span>
+            <span className="line indent"><SplitWords text="Satpute" delay={120} /></span>
+          </h1>
+          <div className="hero-bottom">
+            <p className="hero-role">
+              Software engineer who builds{' '}
+              <span className="rotator">
+                <span key={wordIndex} className="rot-word">{rotatingWords[wordIndex]}</span>
+              </span>
+              <br />that hold up in production.
             </p>
-
-            <div className="metric-row">
-              <div className="metric-card">
-                <span className="metric-label">CGPA</span>
-                <strong className="metric-value hi">8.69 / 10</strong>
-                <div className="metric-bar"><div className="metric-fill" style={{ width: '86.9%' }} /></div>
-                <span className="metric-sub">Walchand College of Engg</span>
-              </div>
-              <div className="metric-card">
-                <span className="metric-label">EXPERIENCE</span>
-                <strong className="metric-value">SWE Intern</strong>
-                <div className="metric-bar"><div className="metric-fill" style={{ width: '97%' }} /></div>
-                <span className="metric-sub">UBS, Pune · Summer 2026</span>
-              </div>
-              <div className="metric-card">
-                <span className="metric-label">LEETCODE</span>
-                <strong className="metric-value hi">750+ Solved</strong>
-                <div className="metric-bar"><div className="metric-fill" style={{ width: '88%' }} /></div>
-                <span className="metric-sub">Rating 1745 · Top 10%</span>
-              </div>
-            </div>
-
-            <div className="links-row">
-              <a href={`mailto:${profileLinks.email}`} className="btn btn-primary">Email</a>
-              <a href={`tel:${profileLinks.phone}`} className="btn">Phone</a>
-              <a href={profileLinks.github} target="_blank" rel="noreferrer" className="btn">GitHub</a>
-              <a href={profileLinks.linkedin} target="_blank" rel="noreferrer" className="btn">LinkedIn</a>
-              <a href={profileLinks.leetcode} target="_blank" rel="noreferrer" className="btn">LeetCode</a>
-              <a href={profileLinks.codolio} target="_blank" rel="noreferrer" className="btn">Codolio</a>
-            </div>
+            <dl className="hero-facts">
+              <div><dt>Now</dt><dd>SWE Intern, UBS</dd></div>
+              <div><dt>Study</dt><dd>B.Tech CSE, WCE Sangli</dd></div>
+              <div><dt>Based</dt><dd>Sangli / Pune, India</dd></div>
+            </dl>
           </div>
+          <a href="#about" className="scroll-hint" aria-label="Scroll down"><span /></a>
         </section>
 
-        {/* TICKER */}
         <div className="ticker" aria-hidden="true">
           <div className="ticker-track">
-            {['Java','Spring Boot','Go','Redis','Docker','React.js','Node.js','Express.js','MongoDB','Python','Linux','REST APIs','JUnit','Mockito','CI/CD','Git',
-              'Java','Spring Boot','Go','Redis','Docker','React.js','Node.js','Express.js','MongoDB','Python','Linux','REST APIs'].map((t, i) => (
-              <span key={i} className={i % 2 === 1 ? 'tick-sep' : ''}>{t}</span>
+            {Array.from({ length: 2 }).map((_, k) => (
+              <span key={k}>
+                Java <i>/</i> Spring Boot <i>/</i> Go <i>/</i> Redis <i>/</i> Docker <i>/</i> React <i>/</i> Node.js <i>/</i> MongoDB <i>/</i> PostgreSQL <i>/</i> Linux <i>/</i>{' '}
+              </span>
             ))}
           </div>
         </div>
 
-        {/* EXPERIENCE */}
-        <section className="card reveal">
-          <div className="card-bar">
-            <div className="win-dots">
-              <span className="dot dot-r" /><span className="dot dot-y" /><span className="dot dot-g" />
-            </div>
-            <span className="card-bar-title">experience.log</span>
-          </div>
-          <div className="card-body">
-            <div className="exp-header">
-              <div>
-                <h2 className="sec-title">{experience.role}</h2>
-                <h3 className="sec-company">{experience.company}</h3>
-              </div>
-              <div className="exp-meta">
-                <span className="badge">{experience.period}</span>
-                <span className="meta-loc">{experience.location}</span>
-              </div>
-            </div>
-            <div className="tag-list">
-              {experience.stack.map((t) => <span key={t} className="tag">{t}</span>)}
-            </div>
-            <ul className="bullet-list">
-              {experience.bullets.map((b, i) => <li key={i}>{b}</li>)}
-            </ul>
-          </div>
-        </section>
-
-        {/* PROJECTS */}
-        <section className="card reveal">
-          <div className="card-bar">
-            <div className="win-dots">
-              <span className="dot dot-r" /><span className="dot dot-y" /><span className="dot dot-g" />
-            </div>
-            <span className="card-bar-title">projects/</span>
-            <div className="tab-group">
-              <button className={`tab ${projectTab === 'featured' ? 'tab-active' : ''}`} onClick={() => setProjectTab('featured')}>Featured</button>
-              <button className={`tab ${projectTab === 'all' ? 'tab-active' : ''}`} onClick={() => setProjectTab('all')}>All</button>
-            </div>
-          </div>
-          <div className="card-body">
-            <div className="proj-grid">
-              {flagshipProjects.map((p) => (
-                <div key={p.name} className="proj-card">
-                  <div className="beam" />
-                  <div className="proj-top">
-                    <h3 className="proj-name">{p.name}</h3>
-                    {p.badge && <span className="small-badge">{p.badge}</span>}
-                  </div>
-                  <p className="proj-stack">{p.stack}</p>
-                  <div className="proj-links">
-                    {p.github && <a href={p.github} target="_blank" rel="noreferrer" className="btn btn-sm">GitHub</a>}
-                    {p.live && <a href={p.live} target="_blank" rel="noreferrer" className="btn btn-sm btn-primary">Live</a>}
-                  </div>
-                  <ul className="bullet-list proj-bullets">
-                    {p.bullets.map((b, i) => <li key={i}>{b}</li>)}
-                  </ul>
+        <section id="about" className="wrap section grid-2">
+          <SectionLabel index="01">About</SectionLabel>
+          <div>
+            <p className="about-text" ref={aboutRef}>
+              {aboutText.split(' ').map((w, i) => <span key={i}>{w} </span>)}
+            </p>
+            <div className="numbers">
+              {numbers.map((n, i) => (
+                <div className="num reveal" style={{ transitionDelay: `${i * 90}ms` }} key={n.label}>
+                  <strong><CountUp value={n.value} decimals={n.decimals} suffix={n.suffix} /></strong>
+                  <span>{n.label}</span>
                 </div>
               ))}
-              {projectTab === 'all' && otherProjects.map((p) => (
-                <div key={p.name} className="proj-card">
-                  <div className="beam" />
-                  <div className="proj-top">
-                    <h3 className="proj-name">{p.name}</h3>
-                    {p.badge && <span className="small-badge">{p.badge}</span>}
-                  </div>
-                  <p className="proj-stack">{p.stack}</p>
-                  <div className="proj-links">
-                    {p.github && <a href={p.github} target="_blank" rel="noreferrer" className="btn btn-sm">GitHub</a>}
-                    {p.live && <a href={p.live} target="_blank" rel="noreferrer" className="btn btn-sm btn-primary">Live</a>}
-                  </div>
-                  <ul className="bullet-list proj-bullets">
-                    {p.bullets.map((b, i) => <li key={i}>{b}</li>)}
-                  </ul>
+            </div>
+            <div className="edu reveal">
+              <div className="edu-row">
+                <span>{education.period}</span>
+                <span><b>{education.degree}</b><br />{education.college}</span>
+                <span>CGPA {education.cgpa}</span>
+              </div>
+              {education.secondary.map((s) => (
+                <div className="edu-row" key={s.name}>
+                  <span>{s.year}</span>
+                  <span><b>{s.name}</b></span>
+                  <span>{s.details}</span>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* SKILLS */}
-        <section className="card reveal">
-          <div className="card-bar">
-            <div className="win-dots">
-              <span className="dot dot-r" /><span className="dot dot-y" /><span className="dot dot-g" />
-            </div>
-            <span className="card-bar-title">skills.json</span>
+        <section id="work" className="wrap section grid-2">
+          <SectionLabel index="02">Experience</SectionLabel>
+          <div className="rows">
+            {jobs.map((j, i) => {
+              const open = openJob === i;
+              return (
+                <article className={`row reveal ${open ? 'open' : ''}`} key={j.title}>
+                  <button className="row-head" onClick={() => setOpenJob(open ? -1 : i)} aria-expanded={open}>
+                    <span className="row-meta">{j.period}</span>
+                    <span className="row-title">{j.title}<em>{j.org}</em></span>
+                    <span className="plus" />
+                  </button>
+                  <div className="row-body"><div>
+                    <ul>{j.bullets.map((b) => <li key={b}>{b}</li>)}</ul>
+                    <p className="tags">{j.tags.join('  ·  ')}</p>
+                  </div></div>
+                </article>
+              );
+            })}
           </div>
-          <div className="card-body">
-            <div className="skills-grid">
-              {skillCategories.map((cat) => (
-                <div key={cat.title} className="skill-group">
-                  <h3 className="skill-title">{cat.title}</h3>
-                  <div className="tag-list">
-                    {cat.items.map((item) => <span key={item} className="tag">{item}</span>)}
-                  </div>
+        </section>
+
+        <section id="projects" className="wrap section">
+          <div className="grid-2 head">
+            <SectionLabel index="03">Selected projects</SectionLabel>
+            <h2 className="big reveal">Things I've designed, built and <em>shipped.</em></h2>
+          </div>
+          <div className="projects">
+            {allProjects.map((p, i) => {
+              const open = openProject === i;
+              return (
+                <article className={`project reveal ${open ? 'open' : ''}`} key={p.name}>
+                  <button className="project-head" onClick={() => setOpenProject(open ? -1 : i)} aria-expanded={open}>
+                    <span className="p-idx">{String(i + 1).padStart(2, '0')}</span>
+                    <span className="p-name">{p.name}</span>
+                    <span className="p-stack">{p.stack}</span>
+                    <span className="plus" />
+                  </button>
+                  <div className="row-body"><div className="project-body">
+                    <div>
+                      {p.badge && <p className="badge">{p.badge}</p>}
+                      <ul>{p.bullets.map((b) => <li key={b}>{b}</li>)}</ul>
+                    </div>
+                    <div className="p-links">
+                      <a href={p.github} target="_blank" rel="noreferrer" className="u-link">Source <Arrow /></a>
+                      {p.live && <a href={p.live} target="_blank" rel="noreferrer" className="u-link">Live site <Arrow /></a>}
+                    </div>
+                  </div></div>
+                </article>
+              );
+            })}
+          </div>
+        </section>
+
+        <section id="skills" className="wrap section grid-2">
+          <SectionLabel index="04">Skills &amp; recognition</SectionLabel>
+          <div>
+            <div className="skills">
+              {skillCategories.map((c, i) => (
+                <div className="skill reveal" style={{ transitionDelay: `${(i % 2) * 80}ms` }} key={c.title}>
+                  <h3>{c.title}</h3>
+                  <p>{c.items.map((s) => <span key={s}>{s}</span>)}</p>
                 </div>
               ))}
             </div>
-          </div>
-        </section>
-
-        {/* LEADERSHIP */}
-        <section className="card reveal">
-          <div className="card-bar">
-            <div className="win-dots">
-              <span className="dot dot-r" /><span className="dot dot-y" /><span className="dot dot-g" />
-            </div>
-            <span className="card-bar-title">leadership.md</span>
-          </div>
-          <div className="card-body">
-            <div className="exp-header">
-              <div>
-                <h2 className="sec-title">{leadership.role}</h2>
-                <h3 className="sec-company">{leadership.org}</h3>
-              </div>
-              <span className="badge">{leadership.period}</span>
-            </div>
-            <ul className="bullet-list">
-              {leadership.bullets.map((b, i) => <li key={i}>{b}</li>)}
-            </ul>
-          </div>
-        </section>
-
-        {/* CODING PROFILE */}
-        <section className="card reveal">
-          <div className="card-bar">
-            <div className="win-dots">
-              <span className="dot dot-r" /><span className="dot dot-y" /><span className="dot dot-g" />
-            </div>
-            <span className="card-bar-title">coding-profile.log</span>
-          </div>
-          <div className="card-body">
-            <div className="metric-row" style={{ marginBottom: '20px' }}>
-              <div className="metric-card">
-                <span className="metric-label">LEETCODE</span>
-                <strong className="metric-value hi">750+ Solved</strong>
-                <span className="metric-sub">Rating: 1745 (Top 10%)</span>
-                <a href={profileLinks.leetcode} target="_blank" rel="noreferrer" className="text-link">View Profile →</a>
-              </div>
-              <div className="metric-card">
-                <span className="metric-label">CODOLIO</span>
-                <strong className="metric-value">Competitive Profile</strong>
-                <span className="metric-sub">Verified problem record</span>
-                <a href={profileLinks.codolio} target="_blank" rel="noreferrer" className="text-link">View Profile →</a>
-              </div>
-              <div className="metric-card">
-                <span className="metric-label">GITHUB</span>
-                <strong className="metric-value hi">Repositories</strong>
-                <span className="metric-sub">Open source & microservices</span>
-                <a href={profileLinks.github} target="_blank" rel="noreferrer" className="text-link">View Profile →</a>
-              </div>
-            </div>
-            <div className="heatmap-row">
-              <div className="heatmap-card">
-                <div className="heatmap-title">
-                  <span>GitHub Contributions</span>
-                  <a href={profileLinks.github} target="_blank" rel="noreferrer" className="text-link">@RameshwariS</a>
-                </div>
-                <div className="chart-wrap">
-                  <img src="https://ghchart.rshah.org/404040/RameshwariS" alt="GitHub Contributions" className="chart-img" loading="lazy" />
-                </div>
-              </div>
-              <div className="heatmap-card">
-                <div className="heatmap-title">
-                  <span>LeetCode Activity</span>
-                  <a href={profileLinks.leetcode} target="_blank" rel="noreferrer" className="text-link">@shrutisatpute1112</a>
-                </div>
-                <div className="chart-wrap">
-                  <img src="https://leetcard.jacoblin.cool/shrutisatpute1112?theme=light&font=Inter&ext=heatmap" alt="LeetCode Heatmap" className="chart-img" loading="lazy" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ACHIEVEMENTS */}
-        <section className="card reveal">
-          <div className="card-bar">
-            <div className="win-dots">
-              <span className="dot dot-r" /><span className="dot dot-y" /><span className="dot dot-g" />
-            </div>
-            <span className="card-bar-title">achievements.txt</span>
-          </div>
-          <div className="card-body">
-            <ul className="bullet-list">
-              {achievements.map((item, i) => <li key={i}>{item}</li>)}
-            </ul>
-          </div>
-        </section>
-
-        {/* EDUCATION */}
-        <section className="card reveal">
-          <div className="card-bar">
-            <div className="win-dots">
-              <span className="dot dot-r" /><span className="dot dot-y" /><span className="dot dot-g" />
-            </div>
-            <span className="card-bar-title">education.txt</span>
-          </div>
-          <div className="card-body">
-            <div className="exp-header">
-              <div>
-                <h2 className="sec-title">{education.degree}</h2>
-                <h3 className="sec-company">{education.college}</h3>
-              </div>
-              <div className="exp-meta">
-                <span className="badge">{education.period}</span>
-                <span className="badge badge-hi">CGPA: {education.cgpa}</span>
-              </div>
-            </div>
-            <div className="secondary-edu">
-              {education.secondary.map((s, i) => (
-                <div key={i} className="sec-edu-row">
-                  <strong>{s.name}</strong> ({s.year}) — {s.details}
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* CONTACT */}
-        <section className="card reveal">
-          <div className="card-bar">
-            <div className="win-dots">
-              <span className="dot dot-r" /><span className="dot dot-y" /><span className="dot dot-g" />
-            </div>
-            <span className="card-bar-title">contact.sh</span>
-          </div>
-          <div className="card-body">
-            <h2 className="sec-title">Contact</h2>
-            <p className="contact-sub">Open to software engineering roles, backend development and collaborations.</p>
-            <div className="contact-grid">
-              <a href={`mailto:${profileLinks.email}`} className="contact-card">
-                <span className="contact-type">Email</span>
-                <strong className="contact-val">{profileLinks.email}</strong>
+            <ol className="awards">
+              {achievements.map((a) => {
+                const [title, desc] = a.split(' — ');
+                return (
+                  <li className="reveal" key={a}>
+                    <span>{title}</span>
+                    {desc && <small>{desc}</small>}
+                  </li>
+                );
+              })}
+            </ol>
+            <div className="activity">
+              <a className="activity-card reveal" href={profileLinks.github} target="_blank" rel="noreferrer">
+                <span className="activity-head">GitHub activity <Arrow /></span>
+                <img src={`https://ghchart.rshah.org/${theme === 'light' ? '1a1a1a' : 'e8e4da'}/RameshwariS`} alt="GitHub contributions chart" loading="lazy" />
               </a>
-              <a href={`tel:${profileLinks.phone}`} className="contact-card">
-                <span className="contact-type">Phone</span>
-                <strong className="contact-val">{profileLinks.phone}</strong>
-              </a>
-              <a href={profileLinks.linkedin} target="_blank" rel="noreferrer" className="contact-card">
-                <span className="contact-type">LinkedIn</span>
-                <strong className="contact-val">linkedin.com/in/rameshwari-satpute</strong>
-              </a>
-              <a href={profileLinks.github} target="_blank" rel="noreferrer" className="contact-card">
-                <span className="contact-type">GitHub</span>
-                <strong className="contact-val">github.com/RameshwariS</strong>
+              <a className="activity-card reveal" href={profileLinks.leetcode} target="_blank" rel="noreferrer">
+                <span className="activity-head">LeetCode · rating 1745 · top 10% <Arrow /></span>
+                <img src={`https://leetcard.jacoblin.cool/shrutisatpute1112?theme=${theme}&font=Inter&ext=heatmap`} alt="LeetCode heatmap" loading="lazy" />
               </a>
             </div>
-            <div className="footer-bar">
-              <span>© {new Date().getFullYear()} Rameshwari Rajendra Satpute</span>
-              <span>Walchand College of Engineering, Sangli</span>
+          </div>
+        </section>
+
+        <section id="contact" className="wrap section contact">
+          <SectionLabel index="05">Contact</SectionLabel>
+          <h2 className="contact-title reveal">
+            Have a role or a project in mind? <a href={`mailto:${profileLinks.email}`} className="u-link">Let's talk.</a>
+          </h2>
+          <div className="contact-grid reveal">
+            <div>
+              <span className="k">Email</span>
+              <button className="copy" onClick={copyEmail}>
+                {profileLinks.email}
+                <span className="copy-tip">{copied ? 'Copied' : 'Click to copy'}</span>
+              </button>
+            </div>
+            <div>
+              <span className="k">Phone</span>
+              <a href={`tel:${profileLinks.phone.replace(/\s/g, '')}`} className="u-link">{profileLinks.phone}</a>
+            </div>
+            <div>
+              <span className="k">Elsewhere</span>
+              <p className="elsewhere">
+                {links.map((l) => <a key={l.label} href={l.href} target="_blank" rel="noreferrer" className="u-link">{l.label} <Arrow size={12} /></a>)}
+              </p>
             </div>
           </div>
         </section>
       </main>
 
-      {/* CLI MODAL */}
-      {cliOpen && (
-        <div className="modal-backdrop" onClick={() => setCliOpen(false)}>
-          <div className="modal-win" onClick={(e) => e.stopPropagation()}>
-            <div className="card-bar">
-              <div className="win-dots">
-                <span className="dot dot-r" onClick={() => setCliOpen(false)} style={{ cursor: 'pointer' }} />
-                <span className="dot dot-y" /><span className="dot dot-g" />
-              </div>
-              <span className="card-bar-title">terminal.sh</span>
-              <button className="close-x" onClick={() => setCliOpen(false)}>✕</button>
-            </div>
-            <div className="cli-body">
-              <div className="cli-output">
-                {cliLogs.map((log, i) => <div key={i} className="cli-line">{log}</div>)}
-              </div>
-              <form className="cli-form" onSubmit={handleCliSubmit}>
-                <span className="cli-prompt">&gt;</span>
-                <input
-                  type="text"
-                  className="cli-input"
-                  value={cliInput}
-                  onChange={(e) => setCliInput(e.target.value)}
-                  placeholder="help, cat resume, experience, projects..."
-                  autoFocus
-                />
-              </form>
-            </div>
-          </div>
-        </div>
-      )}
+      <footer className="wrap footer">
+        <span>© {new Date().getFullYear()} Rameshwari Satpute</span>
+        <button className="text-btn" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Back to top ↑</button>
+      </footer>
     </div>
   );
 }
