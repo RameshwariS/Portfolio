@@ -4,13 +4,9 @@ import { useEffect, useRef, useState } from 'react';
 const experience = {
   company: 'UBS, Pune',
   role: 'Software Engineering Intern',
-  period: 'Jun 2026 – Jul 2026',
+  period: 'Jun 2026 \u2013 Jul 2026',
   location: 'Pune, India',
   stack: ['Java', 'Spring Boot', 'REST APIs', 'JUnit', 'Mockito', 'CI/CD', 'Agile/Scrum'],
-  metrics: [
-    { label: 'Test Coverage', value: '97%', progress: 97 },
-    { label: 'Architecture', value: 'Controller-Service-Repo', progress: 95 },
-  ],
   bullets: [
     'Refactored and developed scalable REST APIs in Java using Spring Boot for a modular multi-tier service architecture following controller-service-repository design principles.',
     'Developed comprehensive unit and integration tests using JUnit and Mockito, achieving 97% code coverage while improving software quality and maintainability.',
@@ -22,7 +18,7 @@ const experience = {
 const flagshipProjects = [
   {
     name: 'GoProxyX',
-    stack: 'Go · Redis · Docker · Reverse Proxy · REST API',
+    stack: 'Go \u00b7 Redis \u00b7 Docker \u00b7 Reverse Proxy \u00b7 REST API',
     github: 'https://github.com/RameshwariS',
     bullets: [
       'Built a production-grade API Gateway serving as a scalable entry point for distributed microservices and client requests.',
@@ -33,9 +29,9 @@ const flagshipProjects = [
     ],
   },
   {
-    name: 'DSV — Dataset Versioning System',
-    stack: 'Python · CLI · ML Experiment Tracking',
-    badge: 'Finalist · WCE ACM Hackathon 2026',
+    name: 'DSV \u2014 Dataset Versioning System',
+    stack: 'Python \u00b7 CLI \u00b7 ML Experiment Tracking',
+    badge: 'Finalist \u00b7 WCE ACM Hackathon 2026',
     github: 'https://github.com/RameshwariS',
     bullets: [
       'Engineered a lightweight, file-first toolkit to improve reproducibility in machine learning workflows.',
@@ -46,7 +42,7 @@ const flagshipProjects = [
   },
   {
     name: 'Movie Booking Site',
-    stack: 'React (Vite) · Node.js · Express.js · MongoDB Atlas · REST API',
+    stack: 'React (Vite) \u00b7 Node.js \u00b7 Express.js \u00b7 MongoDB Atlas \u00b7 REST API',
     github: 'https://github.com/RameshwariS/MOVIE_BOOKING',
     live: 'https://github.com/RameshwariS/MOVIE_BOOKING',
     bullets: [
@@ -61,8 +57,8 @@ const flagshipProjects = [
 const otherProjects = [
   {
     name: 'AgriSeva',
-    stack: 'React.js · Express.js · TensorFlow.js · NVIDIA APIs',
-    badge: '1st Place · WCE ACM 2025',
+    stack: 'React.js \u00b7 Express.js \u00b7 TensorFlow.js \u00b7 NVIDIA APIs',
+    badge: '1st Place \u00b7 WCE ACM 2025',
     github: 'https://github.com/Nandinipatil1410/WCEHackathon2025_TeamAnvesha',
     live: 'https://agriseva.vercel.app/',
     bullets: [
@@ -73,7 +69,7 @@ const otherProjects = [
   },
   {
     name: 'Blogify',
-    stack: 'Node.js · Express.js · MongoDB · EJS',
+    stack: 'Node.js \u00b7 Express.js \u00b7 MongoDB \u00b7 EJS',
     github: 'https://github.com/RameshwariS/Blog',
     live: 'https://blogify-oz95.onrender.com/',
     bullets: [
@@ -83,7 +79,7 @@ const otherProjects = [
   },
   {
     name: 'URL Shortener',
-    stack: 'Node.js · Express.js · MongoDB · EJS',
+    stack: 'Node.js \u00b7 Express.js \u00b7 MongoDB \u00b7 EJS',
     github: 'https://github.com/RameshwariS/URL-Shortner',
     bullets: [
       'Short-link generation with fast and reliable redirection logic.',
@@ -107,7 +103,7 @@ const skillCategories = [
 const leadership = {
   role: 'Main Program Director',
   org: "Walchand Linux Users' Group (WLUG)",
-  period: 'May 2025 – Present',
+  period: 'May 2025 \u2013 Present',
   bullets: [
     'Delivered a session on Golang at Metamorphosis 2k26 (Docker & Golang), engaging 180+ participants.',
     'Conducted a session at LinuxDiary 5.0 promoting Linux and open-source culture; led 5+ hands-on workshops.',
@@ -117,17 +113,17 @@ const leadership = {
 };
 
 const achievements = [
-  'AWS Educate — Introduction to Cloud 101 certification badge.',
-  '1st Place · WCE ACM Hackathon 2025 (Novice Track) — AI-powered plant disease detection, ranked 1st among 20+ teams.',
-  '1st Place · TechFusion CodeDuet 2025 pair-programming contest.',
-  'Finalist · WCE ACM Hackathon 2026 (Expert Track) for the DSV project.',
-  'Top 450 of 2,300+ participants · ICPC AlgoQueen 2025.',
+  'AWS Educate \u2014 Introduction to Cloud 101 certification badge.',
+  '1st Place \u00b7 WCE ACM Hackathon 2025 (Novice Track) \u2014 AI-powered plant disease detection, ranked 1st among 20+ teams.',
+  '1st Place \u00b7 TechFusion CodeDuet 2025 pair-programming contest.',
+  'Finalist \u00b7 WCE ACM Hackathon 2026 (Expert Track) for the DSV project.',
+  'Top 450 of 2,300+ participants \u00b7 ICPC AlgoQueen 2025.',
 ];
 
 const education = {
   college: 'Walchand College of Engineering, Sangli, Maharashtra',
   degree: 'B.Tech in Computer Science and Engineering',
-  period: '2023 – 2027',
+  period: '2023 \u2013 2027',
   cgpa: '8.69 / 10',
   secondary: [
     { name: 'LGRPKP College', details: 'HSC: 88.3% | MHT-CET: 99.65 Percentile', year: '2023' },
@@ -217,8 +213,6 @@ function SectionLabel({ index, children }) {
 function App() {
   const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light');
   const [menuOpen, setMenuOpen] = useState(false);
-  const [openProject, setOpenProject] = useState(0);
-  const [openJob, setOpenJob] = useState(0);
   const [copied, setCopied] = useState(false);
   const [wordIndex, setWordIndex] = useState(0);
   const [clock, setClock] = useState('');
@@ -322,7 +316,7 @@ function App() {
           ))}
         </nav>
         <div className="top-right">
-          <span className="clock">Pune, IN · {clock}</span>
+          <span className="clock">Pune, IN \u00b7 {clock}</span>
           <button className="text-btn" onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')} aria-label="Toggle theme">
             {theme === 'light' ? 'Dark' : 'Light'}
           </button>
@@ -334,7 +328,7 @@ function App() {
 
       <main>
         <section id="home" className="hero wrap">
-          <p className="hero-kicker"><span className="live-dot" />Available for SDE roles · 2027</p>
+          <p className="hero-kicker"><span className="live-dot" />Available for SDE roles \u00b7 2027</p>
           <h1 className="hero-name">
             <span className="line"><SplitWords text="Rameshwari" /></span>
             <span className="line indent"><SplitWords text="Satpute" delay={120} /></span>
@@ -399,55 +393,46 @@ function App() {
 
         <section id="work" className="wrap section grid-2">
           <SectionLabel index="02">Experience</SectionLabel>
-          <div className="rows">
-            {jobs.map((j, i) => {
-              const open = openJob === i;
-              return (
-                <article className={`row reveal ${open ? 'open' : ''}`} key={j.title}>
-                  <button className="row-head" onClick={() => setOpenJob(open ? -1 : i)} aria-expanded={open}>
-                    <span className="row-meta">{j.period}</span>
-                    <span className="row-title">{j.title}<em>{j.org}</em></span>
-                    <span className="plus" />
-                  </button>
-                  <div className="row-body"><div>
-                    <ul>{j.bullets.map((b) => <li key={b}>{b}</li>)}</ul>
-                    <p className="tags">{j.tags.join('  ·  ')}</p>
-                  </div></div>
-                </article>
-              );
-            })}
+          <div className="exp-cards">
+            {jobs.map((j) => (
+              <article className="exp-card reveal" key={j.title}>
+                <div className="exp-card-header">
+                  <span className="exp-period">{j.period}</span>
+                  <h3 className="exp-title">{j.title}</h3>
+                  <span className="exp-org">{j.org}</span>
+                </div>
+                <ul className="exp-bullets">
+                  {j.bullets.map((b) => <li key={b}>{b}</li>)}
+                </ul>
+                <p className="exp-tags">{j.tags.join('  \u00b7  ')}</p>
+              </article>
+            ))}
           </div>
         </section>
 
         <section id="projects" className="wrap section">
-          <div className="grid-2 head">
+          <div className="grid-2 proj-head">
             <SectionLabel index="03">Selected projects</SectionLabel>
-            <h2 className="big reveal">Things I've designed, built and <em>shipped.</em></h2>
+            <h2 className="big reveal">Things I&apos;ve designed, built and <em>shipped.</em></h2>
           </div>
-          <div className="projects">
-            {allProjects.map((p, i) => {
-              const open = openProject === i;
-              return (
-                <article className={`project reveal ${open ? 'open' : ''}`} key={p.name}>
-                  <button className="project-head" onClick={() => setOpenProject(open ? -1 : i)} aria-expanded={open}>
-                    <span className="p-idx">{String(i + 1).padStart(2, '0')}</span>
-                    <span className="p-name">{p.name}</span>
-                    <span className="p-stack">{p.stack}</span>
-                    <span className="plus" />
-                  </button>
-                  <div className="row-body"><div className="project-body">
-                    <div>
-                      {p.badge && <p className="badge">{p.badge}</p>}
-                      <ul>{p.bullets.map((b) => <li key={b}>{b}</li>)}</ul>
-                    </div>
-                    <div className="p-links">
-                      <a href={p.github} target="_blank" rel="noreferrer" className="u-link">Source <Arrow /></a>
-                      {p.live && <a href={p.live} target="_blank" rel="noreferrer" className="u-link">Live site <Arrow /></a>}
-                    </div>
-                  </div></div>
-                </article>
-              );
-            })}
+          <div className="project-cards">
+            {allProjects.map((p, i) => (
+              <article className="pcard reveal" key={p.name}>
+                <div className="pcard-top">
+                  <span className="p-idx">{String(i + 1).padStart(2, '0')}</span>
+                  {p.badge && <span className="badge">{p.badge}</span>}
+                </div>
+                <h3 className="pcard-name">{p.name}</h3>
+                <p className="pcard-stack">{p.stack}</p>
+                <ul className="pcard-bullets">
+                  {p.bullets.map((b) => <li key={b}>{b}</li>)}
+                </ul>
+                <div className="p-links">
+                  <a href={p.github} target="_blank" rel="noreferrer" className="u-link">Source <Arrow /></a>
+                  {p.live && <a href={p.live} target="_blank" rel="noreferrer" className="u-link">Live site <Arrow /></a>}
+                </div>
+              </article>
+            ))}
           </div>
         </section>
 
@@ -464,7 +449,7 @@ function App() {
             </div>
             <ol className="awards">
               {achievements.map((a) => {
-                const [title, desc] = a.split(' — ');
+                const [title, desc] = a.split(' \u2014 ');
                 return (
                   <li className="reveal" key={a}>
                     <span>{title}</span>
@@ -479,7 +464,7 @@ function App() {
                 <img src={`https://ghchart.rshah.org/${theme === 'light' ? '1a1a1a' : 'e8e4da'}/RameshwariS`} alt="GitHub contributions chart" loading="lazy" />
               </a>
               <a className="activity-card reveal" href={profileLinks.leetcode} target="_blank" rel="noreferrer">
-                <span className="activity-head">LeetCode · rating 1745 · top 10% <Arrow /></span>
+                <span className="activity-head">LeetCode \u00b7 rating 1745 \u00b7 top 10% <Arrow /></span>
                 <img src={`https://leetcard.jacoblin.cool/shrutisatpute1112?theme=${theme}&font=Inter&ext=heatmap`} alt="LeetCode heatmap" loading="lazy" />
               </a>
             </div>
@@ -489,7 +474,7 @@ function App() {
         <section id="contact" className="wrap section contact">
           <SectionLabel index="05">Contact</SectionLabel>
           <h2 className="contact-title reveal">
-            Have a role or a project in mind? <a href={`mailto:${profileLinks.email}`} className="u-link">Let's talk.</a>
+            Have a role or a project in mind? <a href={`mailto:${profileLinks.email}`} className="u-link">Let&apos;s talk.</a>
           </h2>
           <div className="contact-grid reveal">
             <div>
@@ -514,8 +499,8 @@ function App() {
       </main>
 
       <footer className="wrap footer">
-        <span>© {new Date().getFullYear()} Rameshwari Satpute</span>
-        <button className="text-btn" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Back to top ↑</button>
+        <span>&copy; {new Date().getFullYear()} Rameshwari Satpute</span>
+        <button className="text-btn" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Back to top \u2191</button>
       </footer>
     </div>
   );
