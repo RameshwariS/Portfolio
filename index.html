@@ -6,6 +6,17 @@
     <meta name="description" content="Rameshwari Satpute: Software Engineer, backend and full-stack developer." />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>Rameshwari Satpute | Portfolio</title>
+    <meta name="theme-color" content="#f3f1ec" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#121210" media="(prefers-color-scheme: dark)" />
+    <script>
+      // Apply the theme before first paint to avoid a light-mode flash.
+      (function () {
+        var t;
+        try { t = localStorage.getItem('theme'); } catch (e) {}
+        if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.dataset.theme = t;
+      })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

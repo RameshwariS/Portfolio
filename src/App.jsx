@@ -44,7 +44,6 @@ const flagshipProjects = [
     name: 'Movie Booking Site',
     stack: 'React (Vite) \u00b7 Node.js \u00b7 Express.js \u00b7 MongoDB Atlas \u00b7 REST API',
     github: 'https://github.com/RameshwariS/MOVIE_BOOKING',
-    live: 'https://github.com/RameshwariS/MOVIE_BOOKING',
     bullets: [
       'Built a full-stack movie booking platform supporting movies, theatres, showtimes, seat booking, payments and reviews.',
       'Designed a RESTful API across 6 resource domains with role-based authorization for USER, ADMIN, and THEATER_OWNER roles using JWT.',
@@ -160,8 +159,6 @@ const numbers = [
 const aboutText =
   "I'm a Computer Science student at Walchand College of Engineering who likes the unglamorous parts of software: clean service boundaries, honest tests and APIs that keep working under load. I interned at UBS on Spring Boot services, build Go and Redis tooling on the side, and run open-source events at WLUG.";
 
-const allProjects = [...flagshipProjects, ...otherProjects];
-
 function Arrow({ size = 14 }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -210,19 +207,63 @@ function SectionLabel({ index, children }) {
   );
 }
 
+function StackChips({ stack }) {
+  return (
+    <ul className="chips">
+      {stack.split(' · ').map((s) => <li key={s}>{s}</li>)}
+    </ul>
+  );
+}
+
+function ProjectLinks({ project }) {
+  return (
+    <div className="p-links">
+      <a href={project.github} target="_blank" rel="noreferrer" className="u-link">Source <Arrow /></a>
+      {project.live && <a href={project.live} target="_blank" rel="noreferrer" className="u-link">Live site <Arrow /></a>}
+    </div>
+  );
+}
+
+function initialTheme() {
+  try {
+    const saved = localStorage.getItem('theme');
+    if (saved === 'light' || saved === 'dark') return saved;
+  } catch { /* storage unavailable */ }
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
 function App() {
-  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light');
+  const [theme, setTheme] = useState(initialTheme);
   const [menuOpen, setMenuOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const [wordIndex, setWordIndex] = useState(0);
   const [clock, setClock] = useState('');
+  const [active, setActive] = useState('');
   const aboutRef = useRef(null);
   const cursorRef = useRef(null);
+  const progressRef = useRef(null);
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
-    localStorage.setItem('theme', theme);
+    try { localStorage.setItem('theme', theme); } catch { /* storage unavailable */ }
   }, [theme]);
+
+  useEffect(() => {
+    const sections = navItems.map((n) => document.getElementById(n.id)).filter(Boolean);
+    const onScroll = () => {
+      const doc = document.documentElement;
+      const max = doc.scrollHeight - window.innerHeight;
+      if (progressRef.current) progressRef.current.style.transform = `scaleX(${max > 0 ? window.scrollY / max : 0})`;
+      const mark = window.innerHeight * 0.35;
+      let current = '';
+      sections.forEach((s) => { if (s.getBoundingClientRect().top <= mark) current = s.id; });
+      setActive(current);
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    return () => { window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onScroll); };
+  }, []);
 
   useEffect(() => {
     const id = setInterval(() => setWordIndex((i) => (i + 1) % rotatingWords.length), 2200);
@@ -304,23 +345,31 @@ function App() {
 
   return (
     <div className="page">
+      <a href="#about" className="skip-link">Skip to content</a>
       <div className="cursor" ref={cursorRef} aria-hidden="true" />
 
       <header className="top">
+        <span className="progress" ref={progressRef} aria-hidden="true" />
         <a href="#home" className="brand" onClick={() => setMenuOpen(false)}>Rameshwari Satpute</a>
         <nav className={`nav ${menuOpen ? 'open' : ''}`}>
           {navItems.map((n, i) => (
-            <a key={n.id} href={`#${n.id}`} className="roll" onClick={() => setMenuOpen(false)}>
+            <a
+              key={n.id}
+              href={`#${n.id}`}
+              className={`roll ${active === n.id ? 'active' : ''}`}
+              aria-current={active === n.id ? 'true' : undefined}
+              onClick={() => setMenuOpen(false)}
+            >
               <sup>0{i + 1}</sup><span data-text={n.label}>{n.label}</span>
             </a>
           ))}
         </nav>
         <div className="top-right">
-          <span className="clock">Pune, IN \u00b7 {clock}</span>
+          <span className="clock">Pune, IN &middot; {clock}</span>
           <button className="text-btn" onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')} aria-label="Toggle theme">
             {theme === 'light' ? 'Dark' : 'Light'}
           </button>
-          <button className="text-btn menu-btn" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu">
+          <button className="text-btn menu-btn" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu" aria-expanded={menuOpen}>
             {menuOpen ? 'Close' : 'Menu'}
           </button>
         </div>
@@ -328,7 +377,7 @@ function App() {
 
       <main>
         <section id="home" className="hero wrap">
-          <p className="hero-kicker"><span className="live-dot" />Available for SDE roles \u00b7 2027</p>
+          <p className="hero-kicker"><span className="live-dot" />Available for SDE roles &middot; 2027</p>
           <h1 className="hero-name">
             <span className="line"><SplitWords text="Rameshwari" /></span>
             <span className="line indent"><SplitWords text="Satpute" delay={120} /></span>
@@ -415,22 +464,36 @@ function App() {
             <SectionLabel index="03">Selected projects</SectionLabel>
             <h2 className="big reveal">Things I&apos;ve designed, built and <em>shipped.</em></h2>
           </div>
-          <div className="project-cards">
-            {allProjects.map((p, i) => (
-              <article className="pcard reveal" key={p.name}>
-                <div className="pcard-top">
-                  <span className="p-idx">{String(i + 1).padStart(2, '0')}</span>
+          <div className="features">
+            {flagshipProjects.map((p, i) => (
+              <article className="feature reveal" key={p.name}>
+                <div className="feature-meta">
+                  <span className="p-idx">{String(i + 1).padStart(2, '0')} / Featured</span>
+                  <h3 className="feature-name">{p.name}</h3>
                   {p.badge && <span className="badge">{p.badge}</span>}
+                  <StackChips stack={p.stack} />
+                  <ProjectLinks project={p} />
                 </div>
-                <h3 className="pcard-name">{p.name}</h3>
-                <p className="pcard-stack">{p.stack}</p>
                 <ul className="pcard-bullets">
                   {p.bullets.map((b) => <li key={b}>{b}</li>)}
                 </ul>
-                <div className="p-links">
-                  <a href={p.github} target="_blank" rel="noreferrer" className="u-link">Source <Arrow /></a>
-                  {p.live && <a href={p.live} target="_blank" rel="noreferrer" className="u-link">Live site <Arrow /></a>}
+              </article>
+            ))}
+          </div>
+          <h3 className="more-label reveal">More projects</h3>
+          <div className="project-cards">
+            {otherProjects.map((p, i) => (
+              <article className="pcard reveal" style={{ transitionDelay: `${i * 90}ms` }} key={p.name}>
+                <div className="pcard-top">
+                  <span className="p-idx">{String(flagshipProjects.length + i + 1).padStart(2, '0')}</span>
+                  {p.badge && <span className="badge">{p.badge}</span>}
                 </div>
+                <h3 className="pcard-name">{p.name}</h3>
+                <StackChips stack={p.stack} />
+                <ul className="pcard-bullets">
+                  {p.bullets.map((b) => <li key={b}>{b}</li>)}
+                </ul>
+                <ProjectLinks project={p} />
               </article>
             ))}
           </div>
@@ -461,10 +524,10 @@ function App() {
             <div className="activity">
               <a className="activity-card reveal" href={profileLinks.github} target="_blank" rel="noreferrer">
                 <span className="activity-head">GitHub activity <Arrow /></span>
-                <img src={`https://ghchart.rshah.org/${theme === 'light' ? '1a1a1a' : 'e8e4da'}/RameshwariS`} alt="GitHub contributions chart" loading="lazy" />
+                <img className="gh-chart" src="https://ghchart.rshah.org/1a1a1a/RameshwariS" alt="GitHub contributions chart" loading="lazy" />
               </a>
               <a className="activity-card reveal" href={profileLinks.leetcode} target="_blank" rel="noreferrer">
-                <span className="activity-head">LeetCode \u00b7 rating 1745 \u00b7 top 10% <Arrow /></span>
+                <span className="activity-head">LeetCode &middot; rating 1745 &middot; top 10% <Arrow /></span>
                 <img src={`https://leetcard.jacoblin.cool/shrutisatpute1112?theme=${theme}&font=Inter&ext=heatmap`} alt="LeetCode heatmap" loading="lazy" />
               </a>
             </div>
@@ -500,7 +563,7 @@ function App() {
 
       <footer className="wrap footer">
         <span>&copy; {new Date().getFullYear()} Rameshwari Satpute</span>
-        <button className="text-btn" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Back to top \u2191</button>
+        <button className="text-btn" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Back to top &uarr;</button>
       </footer>
     </div>
   );
