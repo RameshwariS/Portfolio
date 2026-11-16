@@ -1,35 +1,27 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { navItems, profile } from '../data.js';
-import { Flower } from './ui.jsx';
-
-function ThemeIcon({ theme }) {
-  return (
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      {theme === 'light'
-        ? <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" />
-        : <><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" /></>}
-    </svg>
-  );
-}
+import { useEffect, useState } from 'react';
+import { navItems, profile, profileLinks } from '../data.js';
+import { Roll, pad } from './ui.jsx';
 
 export default function Header({ active, theme, isMac, onToggleTheme, onOpenPalette }) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const navRef = useRef(null);
-  const [ind, setInd] = useState({ left: 0, width: 0 });
+  const [hidden, setHidden] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
-  // Slide the pill behind the active link.
-  useLayoutEffect(() => {
-    const place = () => {
-      const el = navRef.current?.querySelector('.active');
-      setInd((prev) => (el ? { left: el.offsetLeft, width: el.offsetWidth } : { ...prev, width: 0 }));
+  // Tuck the bar away while scrolling down, bring it back on the way up.
+  useEffect(() => {
+    let last = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 40);
+      setHidden(y > 300 && y > last);
+      last = y;
     };
-    place();
-    window.addEventListener('resize', place);
-    document.fonts?.ready.then(place);
-    return () => window.removeEventListener('resize', place);
-  }, [active]);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   useEffect(() => {
+    document.body.classList.toggle('no-scroll', menuOpen);
     if (!menuOpen) return undefined;
     const onKey = (e) => { if (e.key === 'Escape') setMenuOpen(false); };
     window.addEventListener('keydown', onKey);
@@ -39,29 +31,42 @@ export default function Header({ active, theme, isMac, onToggleTheme, onOpenPale
   const close = () => setMenuOpen(false);
 
   return (
-    <header className="top">
-      <a href="#home" className="brand" onClick={close}>
-        <Flower className="brand-flower" />{profile.first.toLowerCase()}
-      </a>
-      <nav className={`nav ${menuOpen ? 'open' : ''}`} ref={navRef} aria-label="Primary">
-        <span className="nav-ind" style={{ left: ind.left, width: ind.width, opacity: ind.width ? 1 : 0 }} aria-hidden="true" />
-        {navItems.map((n) => (
-          <a key={n.id} href={`#${n.id}`} className={active === n.id ? 'active' : ''} aria-current={active === n.id ? 'true' : undefined} onClick={close}>
-            {n.label}
-          </a>
-        ))}
-      </nav>
-      <div className="tools">
-        <button className="kbd-btn" onClick={onOpenPalette} aria-label="Open command palette">
-          <kbd>{isMac ? '⌘' : 'Ctrl'}</kbd><kbd>K</kbd>
-        </button>
-        <button className="round-btn" onClick={onToggleTheme} aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}>
-          <ThemeIcon theme={theme} />
-        </button>
-        <button className="round-btn menu-btn" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu" aria-expanded={menuOpen}>
-          <span className={`burger ${menuOpen ? 'open' : ''}`} />
-        </button>
+    <>
+      <header className={`top ${hidden && !menuOpen ? 'hidden' : ''} ${scrolled ? 'scrolled' : ''}`}>
+        <a href="#home" className="brand" onClick={close}>{profile.first} {profile.last}</a>
+        <nav className="nav" aria-label="Primary">
+          {navItems.map((n) => (
+            <a key={n.id} href={`#${n.id}`} className={active === n.id ? 'active' : ''} aria-current={active === n.id ? 'true' : undefined}>
+              <Roll>{n.label}</Roll>
+            </a>
+          ))}
+        </nav>
+        <div className="tools">
+          <button className="tool tool-kbd" onClick={onOpenPalette} aria-label="Open command palette">
+            <kbd>{isMac ? '⌘' : 'Ctrl'}</kbd><kbd>K</kbd>
+          </button>
+          <button className="tool tool-theme" onClick={onToggleTheme} aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}>
+            <i className="theme-dot" /><Roll>{theme === 'light' ? 'Dark' : 'Light'}</Roll>
+          </button>
+          <button className="tool tool-menu" onClick={() => setMenuOpen(!menuOpen)} aria-expanded={menuOpen} aria-controls="menu">
+            {menuOpen ? 'Close' : 'Menu'}
+          </button>
+        </div>
+      </header>
+
+      <div className={`menu ${menuOpen ? 'open' : ''}`} id="menu" inert={!menuOpen}>
+        <ol>
+          {navItems.map((n, i) => (
+            <li key={n.id} style={{ '--i': i }}>
+              <a href={`#${n.id}`} onClick={close}><span>{pad(i + 1)}</span>{n.label}</a>
+            </li>
+          ))}
+        </ol>
+        <div className="menu-foot">
+          <a href={`mailto:${profileLinks.email}`}>{profileLinks.email}</a>
+          <span>{profile.based}</span>
+        </div>
       </div>
-    </header>
+    </>
   );
 }

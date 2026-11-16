@@ -1,5 +1,5 @@
 import { profile, profileLinks } from '../data.js';
-import { Arrow, Flower, Heart, Sparkle, Squiggle } from './ui.jsx';
+import { Arrow, Roll, Rule, Words } from './ui.jsx';
 
 const elsewhere = [
   { label: 'GitHub', href: profileLinks.github },
@@ -10,31 +10,41 @@ const elsewhere = [
 
 export function Contact({ onCopyEmail }) {
   return (
-    <section id="contact" className="section wrap">
-      <div className="contact reveal">
-        <Flower className="float c1" />
-        <Sparkle className="float c2" />
-        <Heart className="float c3" />
-        <Sparkle className="float c4" />
+    <section id="contact" className="section wrap contact">
+      <Rule />
+      <p className="label"><span>(05)</span>Contact</p>
+      <p className="contact-lead reveal">Have a role or a project in mind?</p>
+      <a className="contact-big" href={`mailto:${profileLinks.email}`} data-cursor="Email">
+        <Words text="Let's *talk*" />
+        <Arrow size={64} />
+      </a>
 
-        <p className="kicker"><span>05</span>say hello</p>
-        <p className="contact-lead">Have a role or a project in mind?</p>
-        <a className="contact-big" href={`mailto:${profileLinks.email}`} data-cursor="email me">
-          Let&apos;s talk
-          <Squiggle />
-        </a>
-
-        <div className="contact-row">
-          <button className="btn" data-cursor="copy" onClick={onCopyEmail}>{profileLinks.email}<small>copy</small></button>
-          <a className="btn" href={`mailto:${profileLinks.altEmail}`}>{profileLinks.altEmail}</a>
-          <a className="btn" href={`tel:${profileLinks.phone.replace(/\s/g, '')}`}>{profileLinks.phone}</a>
+      <dl className="contact-grid">
+        <div className="reveal">
+          <Rule />
+          <dt>Email</dt>
+          <dd><button className="plain-link" data-cursor="Copy" onClick={onCopyEmail}><Roll>{profileLinks.email}</Roll></button></dd>
         </div>
-        <div className="contact-row socials">
-          {elsewhere.map((l) => (
-            <a key={l.label} href={l.href} target="_blank" rel="noreferrer" className="btn small">{l.label} <Arrow size={12} /></a>
-          ))}
+        <div className="reveal" style={{ transitionDelay: '80ms' }}>
+          <Rule />
+          <dt>Also at</dt>
+          <dd><a className="plain-link" href={`mailto:${profileLinks.altEmail}`}><Roll>{profileLinks.altEmail}</Roll></a></dd>
         </div>
-      </div>
+        <div className="reveal" style={{ transitionDelay: '160ms' }}>
+          <Rule />
+          <dt>Phone</dt>
+          <dd><a className="plain-link" href={`tel:${profileLinks.phone.replace(/\s/g, '')}`}><Roll>{profileLinks.phone}</Roll></a></dd>
+        </div>
+        <div className="reveal" style={{ transitionDelay: '240ms' }}>
+          <Rule />
+          <dt>Elsewhere</dt>
+          <dd className="elsewhere">
+            {elsewhere.map((l) => (
+              <a key={l.label} href={l.href} target="_blank" rel="noreferrer" className="plain-link"><Roll>{l.label}</Roll></a>
+            ))}
+          </dd>
+        </div>
+      </dl>
     </section>
   );
 }
@@ -42,9 +52,9 @@ export function Contact({ onCopyEmail }) {
 export function Footer({ isMac }) {
   return (
     <footer className="footer wrap">
-      <span>&copy; {new Date().getFullYear()} {profile.first} {profile.last} &middot; made with <Heart /> and React</span>
-      <span className="footer-hint">press <kbd>{isMac ? '⌘' : 'Ctrl'}</kbd> <kbd>K</kbd> to jump anywhere</span>
-      <button className="btn small" data-magnetic="0.4" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Back to top &uarr;</button>
+      <span>&copy; {new Date().getFullYear()} {profile.first} {profile.last}</span>
+      <span className="footer-hint">Press <kbd>{isMac ? '⌘' : 'Ctrl'}</kbd> <kbd>K</kbd> to jump anywhere</span>
+      <button className="plain-link" data-magnetic="0.4" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}><Roll>Back to top</Roll> &uarr;</button>
     </footer>
   );
 }

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Flower } from './ui.jsx';
+import { profile } from '../data.js';
 
-const COUNT_MS = 900;
+const COUNT_MS = 1000;
 
 // Opening curtain: counts to 100, then lifts. `leaving` is driven by the parent.
 export default function Loader({ leaving, onCounted }) {
@@ -22,9 +22,9 @@ export default function Loader({ leaving, onCounted }) {
 
   return (
     <div className={`loader ${leaving ? 'leaving' : ''}`} role="status" aria-label="Loading">
-      <Flower className="loader-flower" />
-      <span className="loader-count" aria-hidden="true">{n}%</span>
-      <span className="loader-note">just a sec&hellip;</span>
+      <span className="loader-tag">{profile.first} {profile.last}</span>
+      <span className="loader-count" aria-hidden="true">{String(n).padStart(3, '0')}</span>
+      <span className="loader-bar" style={{ transform: `scaleX(${n / 100})` }} />
     </div>
   );
 }

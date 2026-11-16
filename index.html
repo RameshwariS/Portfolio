@@ -6,19 +6,21 @@
     <meta name="description" content="Rameshwari Satpute: Software Engineer, backend and full-stack developer." />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>Rameshwari Satpute | Portfolio</title>
-    <meta name="theme-color" content="#fdf6ee" />
+    <meta name="theme-color" content="#f3f2ee" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0d0d0c" media="(prefers-color-scheme: dark)" />
     <script>
-      // Apply the saved theme before first paint. Light is the default.
+      // Apply the theme before first paint: saved choice, else the system setting.
       (function () {
         var t;
         try { t = localStorage.getItem('theme'); } catch (e) {}
-        document.documentElement.dataset.theme = t === 'dark' ? 'dark' : 'light';
+        if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.dataset.theme = t;
       })();
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..800,0..100,0..1;1,9..144,300..800,0..100,0..1&family=Caveat:wght@500;700&family=Nunito:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Instrument+Serif:ital@1&family=JetBrains+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
   </head>

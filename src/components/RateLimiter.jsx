@@ -3,8 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 const BUCKET_CAP = 8;
 const BURST = 12;
 
-// A playable token bucket, drawn as a cookie jar: each request eats a cookie
-// (token) and one bakes back every second.
+// A playable token bucket: each request spends a token, one refills per second.
 export default function RateLimiter() {
   const [tokens, setTokens] = useState(BUCKET_CAP);
   const [log, setLog] = useState([]);
@@ -35,29 +34,32 @@ export default function RateLimiter() {
   };
 
   return (
-    <div className="jar">
-      <p className="jar-note">a token bucket, but make it cookies</p>
-      <div className="cookies" role="img" aria-label={`${tokens} of ${BUCKET_CAP} tokens available`}>
+    <div className="limiter">
+      <div className="limiter-bar">
+        <span>Live demo &middot; token bucket</span>
+        <span>cap {BUCKET_CAP} &middot; refill 1/s</span>
+      </div>
+      <div className="tokens" role="img" aria-label={`${tokens} of ${BUCKET_CAP} tokens available`}>
         {Array.from({ length: BUCKET_CAP }).map((_, i) => (
-          <span key={i} className={i < tokens ? 'cookie full' : 'cookie'} />
+          <span key={i} className={i < tokens ? 'token full' : 'token'} />
         ))}
       </div>
-      <ol className="jar-log" aria-live="polite">
-        {log.length === 0 && <li className="idle">{'// each request eats a cookie, one bakes back every second. try to empty the jar!'}</li>}
+      <ol className="limiter-log" aria-live="polite">
+        {log.length === 0 && <li className="idle">{'// no traffic yet. send a request, then try to get rate-limited.'}</li>}
         {log.map((r) => (
           <li key={r.id} className={r.ok ? 'ok' : 'limited'}>
             <span className="req-id">#{String(r.id).padStart(3, '0')}</span>
-            <span>GET /cookie</span>
+            <span>GET /api</span>
             <b>{r.ok ? '200 OK' : '429 Too Many Requests'}</b>
             {r.ok && <span className="req-ms">{r.ms}ms</span>}
           </li>
         ))}
       </ol>
-      <div className="jar-actions">
-        <button className="btn pink small" data-cursor="yum" onClick={() => send(1)}>Send request</button>
-        <button className="btn small" data-cursor="chaos" onClick={() => send(BURST)}>Burst &times;{BURST}</button>
-        <span className="jar-stats">
-          <b>{stats.ok}</b> served &middot; <b className="limited">{stats.limited}</b> limited
+      <div className="limiter-actions">
+        <button className="btn small" onClick={() => send(1)}><span>Send request</span></button>
+        <button className="btn small ghost" onClick={() => send(BURST)}><span>Burst &times;{BURST}</span></button>
+        <span className="limiter-stats">
+          <b>{stats.ok}</b> served &middot; <b>{stats.limited}</b> limited
         </span>
       </div>
     </div>

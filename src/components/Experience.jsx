@@ -1,31 +1,30 @@
 import { jobs } from '../data.js';
-import { Chips, Flower, Links, SectionHead } from './ui.jsx';
-
-const NODE_COLORS = ['pink', 'lav', 'mint'];
+import { Links, Rule, SectionHead } from './ui.jsx';
 
 export default function Experience() {
   return (
     <section id="work" className="section wrap">
-      <SectionHead index={2} kicker="experience">Where I&apos;ve <em>shipped</em> and led.</SectionHead>
-      <ol className="timeline">
-        {jobs.map((j, i) => (
-          <li className={`tl c-${NODE_COLORS[i % 3]} reveal`} key={j.title}>
-            <Flower className="tl-node" />
-            <article className="card tl-card">
-              <div className="tl-head">
-                <span className="pill">{j.period}</span>
-                <h3 className="tl-title">{j.title}</h3>
-                <p className="tl-org">{j.org}</p>
-                <Chips items={j.tags} />
-                <Links links={j.links} />
-              </div>
-              <ul className="bullets">
-                {j.bullets.map((b) => <li key={b}>{b}</li>)}
-              </ul>
-            </article>
-          </li>
+      <SectionHead index={2} label="Experience" title="Where I've *shipped* and led." />
+      <div className="jobs">
+        {jobs.map((j) => (
+          <article className="job reveal" key={j.title}>
+            <Rule />
+            <div className="job-when">
+              <span>{j.period}</span>
+              <span>{j.note}</span>
+            </div>
+            <div className="job-head">
+              <h3 className="job-title">{j.title}</h3>
+              <p className="job-org">{j.org}</p>
+              <p className="job-tags">{j.tags.join(' · ')}</p>
+              <Links links={j.links} />
+            </div>
+            <ul className="points">
+              {j.bullets.map((b) => <li key={b}>{b}</li>)}
+            </ul>
+          </article>
         ))}
-      </ol>
+      </div>
     </section>
   );
 }

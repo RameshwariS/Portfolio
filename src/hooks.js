@@ -1,23 +1,47 @@
 import { useEffect, useState } from 'react';
+import { flushSync } from 'react-dom';
 
 export const finePointer = () => window.matchMedia('(pointer: fine)').matches;
 export const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-// Light is the designed default; a visitor's explicit choice is remembered.
+// Saved choice first, otherwise follow the system setting.
 function initialTheme() {
   try {
-    if (localStorage.getItem('theme') === 'dark') return 'dark';
+    const saved = localStorage.getItem('theme');
+    if (saved === 'light' || saved === 'dark') return saved;
   } catch { /* storage unavailable */ }
-  return 'light';
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
 export function useTheme() {
   const [theme, setTheme] = useState(initialTheme);
+
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
     try { localStorage.setItem('theme', theme); } catch { /* storage unavailable */ }
   }, [theme]);
-  return [theme, () => setTheme((t) => (t === 'light' ? 'dark' : 'light'))];
+
+  // Switches theme with a circular wipe that grows from the click position,
+  // where the browser supports view transitions.
+  const toggle = (event) => {
+    const next = theme === 'light' ? 'dark' : 'light';
+    if (!document.startViewTransition || reducedMotion()) { setTheme(next); return; }
+    const x = event?.clientX ?? window.innerWidth / 2;
+    const y = event?.clientY ?? 0;
+    const radius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
+    const transition = document.startViewTransition(() => {
+      flushSync(() => setTheme(next));
+      document.documentElement.dataset.theme = next;
+    });
+    transition.ready.then(() => {
+      document.documentElement.animate(
+        { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
+        { duration: 700, easing: 'cubic-bezier(.3, 0, .1, 1)', pseudoElement: '::view-transition-new(root)' }
+      );
+    });
+  };
+
+  return [theme, toggle];
 }
 
 export function useClock() {
@@ -50,14 +74,16 @@ export function useActiveSection(ids) {
   return active;
 }
 
-// Adds `in-view` to every `.reveal` element the first time it scrolls into view.
+// Adds `in-view` to every `.reveal` / `.observe` element the first time it
+// scrolls into view. `.reveal` fades up; `.observe` only gets the class, for
+// children that animate themselves (split words, hairlines).
 export function useReveal() {
   useEffect(() => {
     const obs = new IntersectionObserver(
       (entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in-view'); obs.unobserve(e.target); } }),
       { threshold: 0.1, rootMargin: '0px 0px -6% 0px' }
     );
-    document.querySelectorAll('.reveal').forEach((el) => obs.observe(el));
+    document.querySelectorAll('.reveal, .observe').forEach((el) => obs.observe(el));
     return () => obs.disconnect();
   }, []);
 }

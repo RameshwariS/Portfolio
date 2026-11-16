@@ -107,7 +107,7 @@ export const jobs = [
 ];
 
 // ── Projects ─────────────────────────────────────────────────────────────
-// `demo: 'limiter'` shows the live token bucket (the cookie jar) instead of a screenshot.
+// `demo: 'limiter'` shows the live token bucket instead of a screenshot.
 // Projects without `demo` show a placeholder visual until `image` is set
 // (put the file in /public and use e.g. image: '/dsvx.png').
 export const flagshipProjects = [

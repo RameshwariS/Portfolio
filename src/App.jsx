@@ -1,11 +1,11 @@
-import { Fragment, useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { navItems, profileLinks } from './data.js';
 import { reducedMotion, useActiveSection, useClock, useMagnetic, useReveal, useTheme } from './hooks.js';
-import { Flower } from './components/ui.jsx';
 import Cursor from './components/Cursor.jsx';
 import Loader from './components/Loader.jsx';
 import Header from './components/Header.jsx';
 import Hero from './components/Hero.jsx';
+import Marquee from './components/Marquee.jsx';
 import About from './components/About.jsx';
 import Experience from './components/Experience.jsx';
 import Projects from './components/Projects.jsx';
@@ -76,7 +76,6 @@ function App() {
   return (
     <div className={`page ${phase === 'loading' ? '' : 'is-ready'}`}>
       <a href="#about" className="skip-link">Skip to content</a>
-      <div className="grain" aria-hidden="true" />
       {phase !== 'done' && <Loader leaving={phase === 'lifting'} onCounted={onCounted} />}
       <Cursor />
 
@@ -89,19 +88,11 @@ function App() {
       />
 
       <main>
-        <Hero onCopyEmail={copyEmail} />
+        <Hero clock={clock} onCopyEmail={copyEmail} />
 
-        <div className="ticker" aria-hidden="true">
-          <div className="ticker-track">
-            {[0, 1].map((k) => (
-              <span key={k}>
-                {TICKER.map((t) => <Fragment key={t}>{t}<Flower /></Fragment>)}
-              </span>
-            ))}
-          </div>
-        </div>
+        <Marquee items={TICKER} />
 
-        <About clock={clock} />
+        <About />
         <Experience />
         <Projects />
         <Skills theme={theme} />

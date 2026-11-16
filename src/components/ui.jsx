@@ -1,65 +1,64 @@
-import { useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 
 export const pad = (n) => String(n).padStart(2, '0');
 
-// ── Doodles ──────────────────────────────────────────────────────────────
-// Small decorative shapes. They take their fill from `color`.
-export function Sparkle({ className = '' }) {
-  return (
-    <svg className={`doodle ${className}`} viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M12 1c.9 6.2 4.2 9.6 11 11-6.8 1.4-10.1 4.8-11 11-.9-6.2-4.2-9.6-11-11 6.8-1.4 10.1-4.8 11-11Z" />
-    </svg>
-  );
-}
-
-export function Heart({ className = '' }) {
-  return (
-    <svg className={`doodle ${className}`} viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M12 21s-8.5-5.4-8.5-11.3C3.5 6.5 5.9 4.5 8.5 4.5c1.7 0 2.9.9 3.5 1.9.6-1 1.8-1.9 3.5-1.9 2.6 0 5 2 5 5.2C20.5 15.6 12 21 12 21Z" />
-    </svg>
-  );
-}
-
-export function Flower({ className = '' }) {
-  return (
-    <svg className={`doodle ${className}`} viewBox="0 0 40 40" aria-hidden="true">
-      <g>
-        <circle cx="20" cy="9.5" r="7.5" /><circle cx="30" cy="16.8" r="7.5" /><circle cx="26.2" cy="28.5" r="7.5" />
-        <circle cx="13.8" cy="28.5" r="7.5" /><circle cx="10" cy="16.8" r="7.5" />
-      </g>
-      {/* covers the petal outlines where they overlap in the middle */}
-      <circle className="flower-fill" cx="20" cy="20" r="9.5" />
-      <circle className="flower-eye" cx="20" cy="20" r="4.6" />
-    </svg>
-  );
-}
-
-export function Squiggle({ className = '' }) {
-  return (
-    <svg className={`squiggle ${className}`} viewBox="0 0 200 14" preserveAspectRatio="none" aria-hidden="true">
-      <path d="M3 8c12-8 20 8 32 0s20-8 32 0 20 8 32 0 20-8 32 0 20 8 32 0 20-8 32 0" pathLength="1" />
-    </svg>
-  );
-}
-
 export function Arrow({ size = 14 }) {
   return (
-    <svg className="arrow" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <svg className="arrow" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M7 17 17 7M8 7h9v9" />
     </svg>
   );
 }
 
+// ── Text motion ──────────────────────────────────────────────────────────
+// Splits a sentence into words that rise out of a mask, one after another,
+// when the nearest `.observe` ancestor (or the element itself) comes into view.
+// Wrap a phrase in *asterisks* to set it in the italic serif.
+export function Words({ text, as: Tag = 'span', className = '' }) {
+  let italic = false;
+  return (
+    <Tag className={`words observe ${className}`} aria-label={text.replace(/\*/g, '')}>
+      {text.split(' ').map((raw, i) => {
+        let word = raw;
+        if (word.startsWith('*')) { italic = true; word = word.slice(1); }
+        const isItalic = italic;
+        if (word.endsWith('*')) { italic = false; word = word.slice(0, -1); }
+        return (
+          <Fragment key={i}>
+            <span className="w" aria-hidden="true"><span className={isItalic ? 'it' : ''} style={{ '--i': i }}>{word}</span></span>{' '}
+          </Fragment>
+        );
+      })}
+    </Tag>
+  );
+}
+
+// One line of text whose letters rise in sequence (used for the hero name).
+export function Chars({ text, delay = 0 }) {
+  return (
+    <span className="line" aria-hidden="true">
+      {[...text].map((c, i) => (
+        <span className="ch" key={i} style={{ animationDelay: `${delay + i * 38}ms` }}>{c}</span>
+      ))}
+    </span>
+  );
+}
+
+// Text that rolls up and is replaced by a copy of itself on hover.
+export function Roll({ children }) {
+  return <span className="roll" data-text={children}><span>{children}</span></span>;
+}
+
 // ── Links ────────────────────────────────────────────────────────────────
 // External link. A link with no URL yet (TODO_LINK in data.js) renders as a
 // dashed marker while developing and is left out of production builds.
-export function Ext({ href, children, className = 'u-link' }) {
+export function Ext({ href, children }) {
   if (!href) {
     return import.meta.env.DEV
       ? <span className="link-todo" title="No URL yet: add it in src/data.js">{children} [add link]</span>
       : null;
   }
-  return <a href={href} target="_blank" rel="noreferrer" className={className}>{children} <Arrow /></a>;
+  return <a href={href} target="_blank" rel="noreferrer" className="u-link">{children} <Arrow size={12} /></a>;
 }
 
 export function Links({ links }) {
@@ -72,34 +71,19 @@ export function Links({ links }) {
 }
 
 // ── Layout pieces ────────────────────────────────────────────────────────
-// Handwritten kicker above a serif heading. <em> inside gets a marker highlight.
-export function SectionHead({ index, kicker, children }) {
+// A hairline that draws itself across when it scrolls into view.
+export function Rule() {
+  return <span className="rule observe" aria-hidden="true" />;
+}
+
+// Section opener: drawn hairline, small index label, then a word-revealed title.
+export function SectionHead({ index, label, title }) {
   return (
-    <header className="sec-head reveal">
-      <p className="kicker"><span>{pad(index)}</span>{kicker}</p>
-      <h2 className="sec-title">{children}</h2>
+    <header className="sec-head">
+      <Rule />
+      <p className="label"><span>({pad(index)})</span>{label}</p>
+      <Words as="h2" className="sec-title" text={title} />
     </header>
-  );
-}
-
-// A little app window: pastel title bar with three dots.
-export function Window({ title, className = '', children }) {
-  return (
-    <div className={`win ${className}`}>
-      <div className="win-bar">
-        <i /><i /><i />
-        <span>{title}</span>
-      </div>
-      {children}
-    </div>
-  );
-}
-
-export function Chips({ items }) {
-  return (
-    <ul className="chips">
-      {items.map((s) => <li key={s}>{s}</li>)}
-    </ul>
   );
 }
 
@@ -114,8 +98,8 @@ export function CountUp({ value, decimals, suffix }) {
       obs.disconnect();
       const start = performance.now();
       const tick = (t) => {
-        const p = Math.min((t - start) / 1400, 1);
-        setN(value * (1 - Math.pow(1 - p, 3)));
+        const p = Math.min((t - start) / 1600, 1);
+        setN(value * (1 - Math.pow(1 - p, 4)));
         if (p < 1) raf = requestAnimationFrame(tick);
       };
       raf = requestAnimationFrame(tick);
