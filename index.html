@@ -6,21 +6,19 @@
     <meta name="description" content="Rameshwari Satpute: Software Engineer, backend and full-stack developer." />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>Rameshwari Satpute | Portfolio</title>
-    <meta name="theme-color" content="#f3f3ee" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#090a0c" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#fdf6ee" />
     <script>
-      // Apply the theme before first paint to avoid a light-mode flash.
+      // Apply the saved theme before first paint. Light is the default.
       (function () {
         var t;
         try { t = localStorage.getItem('theme'); } catch (e) {}
-        if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-        document.documentElement.dataset.theme = t;
+        document.documentElement.dataset.theme = t === 'dark' ? 'dark' : 'light';
       })();
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Serif:ital@1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..800,0..100,0..1;1,9..144,300..800,0..100,0..1&family=Caveat:wght@500;700&family=Nunito:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
   </head>
