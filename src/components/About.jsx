@@ -1,70 +1,54 @@
-import { useEffect, useRef } from 'react';
-import { aboutText, education, heroFacts, numbers } from '../data.js';
-import { CountUp, Rule, SectionHead } from './ui.jsx';
+import { memo } from 'react';
+import { about, profile, status } from '../data.js';
+import { useClock } from '../hooks.js';
+import { Icon, Meta, Tile } from './ui.jsx';
 
-export default function About() {
-  const textRef = useRef(null);
-
-  // Words of the bio light up as the paragraph moves through the viewport.
-  useEffect(() => {
-    const el = textRef.current;
-    const words = [...el.querySelectorAll('span')];
-    const onScroll = () => {
-      const r = el.getBoundingClientRect();
-      const vh = window.innerHeight;
-      const p = Math.min(Math.max((vh * 0.85 - r.top) / (r.height + vh * 0.3), 0), 1);
-      const lit = Math.round(p * words.length);
-      words.forEach((w, i) => w.classList.toggle('lit', i < lit));
-    };
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
+export const StatusTile = memo(function StatusTile() {
   return (
-    <section id="about" className="section wrap">
-      <SectionHead index={1} label="About" codename="Origin" title="I like the *unglamorous* parts of software." />
-
-      <div className="split">
-        <dl className="facts reveal">
-          {heroFacts.map((f) => (
-            <div key={f.k}><dt>{f.k}</dt><dd>{f.v}</dd></div>
-          ))}
-        </dl>
-        <p className="about-text" ref={textRef}>
-          {aboutText.split(' ').map((w, i) => <span key={i}>{w} </span>)}
-        </p>
+    <Tile className="t-status">
+      <Meta path="/status" status="live" />
+      <div className="status">
+        <span className="pulse" aria-hidden="true" />
+        <p className="status__title">{status.title}</p>
+        <p className="status__sub">{status.sub}</p>
       </div>
+    </Tile>
+  );
+});
 
-      <dl className="stats">
-        {numbers.map((n, i) => (
-          <div className="stat reveal" style={{ transitionDelay: `${i * 90}ms` }} key={n.label}>
-            <Rule />
-            <dd><CountUp value={n.value} decimals={n.decimals} suffix={n.suffix} /></dd>
-            <dt>{n.label}</dt>
-          </div>
-        ))}
-      </dl>
+export const AboutTile = memo(function AboutTile() {
+  return (
+    <Tile className="t-about">
+      <Meta path="/about" status="200" />
+      <p className="about__lead">{about.lead}<span>{about.highlight}</span></p>
+      <p className="about__sub">{about.sub}</p>
+    </Tile>
+  );
+});
 
-      <div className="split edu">
-        <h3 className="label"><span>(i)</span>Education</h3>
-        <div>
-          <div className="row edu-row reveal">
-            <Rule />
-            <span>{education.period}</span>
-            <span><b>{education.degree}</b>{education.college}</span>
-            <span>CGPA {education.cgpa}</span>
-          </div>
-          {education.secondary.map((s) => (
-            <div className="row edu-row reveal" key={s.name}>
-              <Rule />
-              <span>{s.year}</span>
-              <span><b>{s.name}</b></span>
-              <span>{s.details}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
+// Re-renders every second on its own; nothing else on the page does.
+export function ClockTile() {
+  const { hh, mm, ss, mood, progress } = useClock();
+  return (
+    <Tile className="t-clock" aria-label={`Local time in India: ${hh}:${mm} IST, ${mood}`}>
+      <Meta path="/local-time" status="IST" />
+      <p className="clock__place">{profile.location}</p>
+      <p className="clock__time" aria-hidden="true">
+        <span>{hh}</span><span className="colon">:</span><span>{mm}</span><span className="sec">{ss}</span>
+      </p>
+      <p className="clock__note" aria-hidden="true">{mood} · UTC+5:30</p>
+      <div className="dayline" aria-hidden="true"><i style={{ '--p': progress.toFixed(4) }} /></div>
+    </Tile>
   );
 }
+
+export const ResumeTile = memo(function ResumeTile() {
+  return (
+    <Tile as="a" className="t-resume" href={profile.resume} download data-cursor="view" data-cursor-label="Get">
+      <Meta as="span" path="/resume.pdf" status="200" />
+      <span className="resume__icon" aria-hidden="true"><Icon name="download" /></span>
+      <span className="resume__title">Résumé</span>
+      <span className="resume__sub">PDF · 2 pages · download</span>
+    </Tile>
+  );
+});

@@ -2,28 +2,59 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Rameshwari Satpute: Software Engineer, backend and full-stack developer." />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Rameshwari Satpute — Software Engineer</title>
+
+    <!-- SEO -->
+    <meta name="description" content="Rameshwari Satpute is a software engineer building backend systems in Go and Java: API gateways, Spring Boot microservices and developer tools. Ex-UBS SWE intern, B.Tech CSE at Walchand College of Engineering ('27)." />
+    <meta name="author" content="Rameshwari Satpute" />
+    <meta name="theme-color" content="#07070b" />
+    <link rel="canonical" href="https://portfolio-rameshwari-satpute.vercel.app/" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>Rameshwari Satpute | Portfolio</title>
-    <meta name="theme-color" content="#04050a" />
-    <script>
-      // Apply the saved theme before first paint. Deep space (dark) is the default.
-      (function () {
-        var t;
-        try { t = localStorage.getItem('theme'); } catch (e) {}
-        document.documentElement.dataset.theme = t === 'light' ? 'light' : 'dark';
-      })();
+
+    <!-- Open Graph / Twitter -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://portfolio-rameshwari-satpute.vercel.app/" />
+    <meta property="og:title" content="Rameshwari Satpute — Software Engineer" />
+    <meta property="og:description" content="Backend engineer building API gateways, Spring Boot services and developer tools. Ex-UBS intern · Meshery contributor · Hackathon winner." />
+    <!-- PLACEHOLDER: add a 1200×630 share image at public/og-image.png -->
+    <meta property="og:image" content="https://portfolio-rameshwari-satpute.vercel.app/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Rameshwari Satpute — Software Engineer" />
+    <meta name="twitter:description" content="Backend engineer building API gateways, Spring Boot services and developer tools." />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Rameshwari Satpute",
+        "jobTitle": "Software Engineer",
+        "url": "https://portfolio-rameshwari-satpute.vercel.app/",
+        "alumniOf": "Walchand College of Engineering, Sangli",
+        "sameAs": [
+          "https://github.com/RameshwariS",
+          "https://www.linkedin.com/in/rameshwari-satpute-8068322a6/",
+          "https://leetcode.com/u/shrutisatpute1112/"
+        ]
+      }
     </script>
+
+    <!-- Fonts: Clash Display (Fontshare) + Inter & JetBrains Mono (Google) -->
+    <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600,700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+    <script>
+      // Flag JS + reduced motion before first paint so CSS can adapt immediately.
+      document.documentElement.classList.add('js');
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('is-reduced');
+    </script>
   </head>
   <body>
     <div id="app"></div>
+    <noscript>Rameshwari Satpute — Software Engineer. Email: rameshwaris1112@gmail.com · github.com/RameshwariS</noscript>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

@@ -1,254 +1,200 @@
-// ── Resume Data ──────────────────────────────────────────────────────────
-// All site content lives here. Anything marked TODO is a placeholder to fill in.
-
-// A link whose URL hasn't been provided yet. The UI shows these as a dashed
-// "add link" marker while developing (npm run dev) and hides them in production.
-export const TODO_LINK = null;
+// ── Site content ─────────────────────────────────────────────────────────
+// Everything visible on the page lives here. Edit text, links and numbers
+// in this file; the components only handle layout and motion.
 
 export const profile = {
   first: 'Rameshwari',
   last: 'Satpute',
-  role: 'Software Engineer',
-  status: 'Available for SDE roles · 2027',
-  based: 'Sangli / Pune, India',
+  eyebrow: 'Software Engineer — backend · Go · Java',
+  email: 'rameshwaris1112@gmail.com',
+  resume: '/Rameshwari_Satpute_Resume.pdf', // lives in /public
+  location: 'Sangli · Pune, India',
 };
 
-export const profileLinks = {
-  email: 'rameshwaris1112@gmail.com',
-  altEmail: 'shrutisatpute1112@gmail.com',
-  phone: '+91 7875743747',
-  linkedin: 'https://www.linkedin.com/in/rameshwari-satpute-8068322a6/',
+export const links = {
   github: 'https://github.com/RameshwariS',
+  linkedin: 'https://www.linkedin.com/in/rameshwari-satpute-8068322a6/',
   leetcode: 'https://leetcode.com/u/shrutisatpute1112/',
-  codolio: 'https://codolio.com/profile/shruti1',
+  medium: 'https://medium.com/@shrutisatpute1112',
 };
 
 export const navItems = [
-  { id: 'about', label: 'About', method: 'GET', status: '200 OK' },
-  { id: 'work', label: 'Experience', method: 'GET', status: '200 OK' },
-  { id: 'projects', label: 'Projects', method: 'GET', status: '200 OK' },
-  { id: 'skills', label: 'Skills', method: 'GET', status: '200 OK' },
-  { id: 'contact', label: 'Contact', method: 'POST', status: '202 Accepted' },
+  { id: 'work', label: 'Work' },
+  { id: 'projects', label: 'Projects' },
+  { id: 'stack', label: 'Stack' },
+  { id: 'contact', label: 'Contact' },
 ];
 
-export const rotatingWords = ['backends', 'REST APIs', 'gateways', 'web apps', 'dev tools'];
-
-export const heroFacts = [
-  { k: 'Interned at', v: 'UBS, Pune' },
-  { k: 'Study', v: 'B.Tech CSE, WCE Sangli' },
-  { k: 'Based', v: 'Sangli / Pune, India' },
-  { k: 'Open source', v: 'Meshery (CNCF)' },
+// Cycled with a scramble effect in the hero: "I build ___"
+export const roles = [
+  'backend systems',
+  'API gateways in Go',
+  'Spring Boot services',
+  'developer tools',
+  'things that hold up under load',
 ];
 
-export const aboutText =
-  "I'm a Computer Science student at Walchand College of Engineering who likes the unglamorous parts of software: clean service boundaries, honest tests and APIs that keep working under load. I interned at UBS on Spring Boot services, build Go and Redis tooling on the side, and run open-source events at WLUG.";
+export const heroFacts = ['Ex-UBS SWE intern', "B.Tech CSE · WCE '27", 'Meshery contributor'];
 
-export const numbers = [
-  { value: 8.69, decimals: 2, suffix: '', label: 'CGPA, B.Tech CSE' },
-  { value: 750, decimals: 0, suffix: '+', label: 'LeetCode problems' },
-  { value: 97, decimals: 0, suffix: '%', label: 'Test coverage at UBS' },
-  { value: 180, decimals: 0, suffix: '+', label: 'People at my Go talk' },
-];
+export const status = {
+  title: 'Open to opportunities',
+  sub: 'SDE internships & new-grad roles · graduating 2027',
+};
 
-export const education = {
-  college: 'Walchand College of Engineering, Sangli, Maharashtra',
-  degree: 'B.Tech in Computer Science and Engineering',
-  period: '2023 – 2027',
-  cgpa: '8.69 / 10',
-  secondary: [
-    { name: 'LGRPKP College', details: 'HSC: 88.3% | MHT-CET: 99.65 Percentile', year: '2023' },
-    { name: 'RSK School', details: 'SSC: 92.4%', year: '2021' },
+export const about = {
+  lead: 'I like the unglamorous parts of software — ',
+  highlight: 'clean service boundaries, honest tests and APIs that hold up under load.',
+  sub: 'CS undergrad at Walchand College of Engineering. Interned at UBS, build Go tooling on the side, and run open-source events at WLUG.',
+};
+
+// Bullets are [bold lead-in, rest of the sentence]
+export const job = {
+  role: 'Software Engineering Intern',
+  org: 'UBS',
+  when: 'Jun – Jul 2026 · Pune',
+  bullets: [
+    ['Shipped REST APIs', ' in Java + Spring Boot for a modular microservice architecture.'],
+    ['Hit 97% test coverage', ' with JUnit and Mockito unit + integration tests.'],
+    ['Sped up production endpoints', ' by debugging and optimising data services.'],
+    ['Delivered in Agile sprints', ' through automated CI/CD, with peer code reviews.'],
+  ],
+  tags: ['Java', 'Spring Boot', 'REST', 'Microservices', 'JUnit', 'Mockito', 'CI/CD'],
+  links: [
+    { label: 'Internship certificate', href: 'https://drive.google.com/file/d/1Aw3TcIrtJFcYwCSWDRpV6ElHKEsTVLkz/view?usp=sharing' },
   ],
 };
 
-// ── Experience ───────────────────────────────────────────────────────────
-export const jobs = [
+export const stats = [
+  { value: 750, suffix: '+', label: 'LeetCode problems solved' },
+  { value: 1745, label: 'Peak LeetCode rating' },
+  { value: 97, suffix: '%', label: 'Test coverage at UBS' },
+  { value: 180, suffix: '+', label: 'People at my Go talk' },
+];
+
+export const leadership = {
+  role: 'Main Program Director, WLUG',
+  org: "Walchand Linux Users' Group",
+  when: 'May 2025 – now',
+  bullets: [
+    ['Ran 3 flagship events:', ' Open Source Day 2k26, LinuxDiary 6.0, Metamorphosis 2k26 — and built their CTF platform.'],
+    ['Taught Docker + Go to 180+ people', ' at Metamorphosis; led 5+ hands-on workshops.'],
+    ['Hosted FOSS FILES S6', ' on Anycast and DNS routing in modern web architecture.'],
+  ],
+  links: [
+    { label: 'CTF platform', href: 'https://github.com/Walchand-Linux-Users-Group/Wargames_Meta_2k26' },
+    { label: 'Go session code', href: 'https://github.com/RameshwariS/Meta2k26-GoS2' },
+    { label: 'Watch FOSS FILES', href: 'https://www.youtube.com/live/UWKW6FXVXwQ' },
+  ],
+};
+
+export const education = {
+  degree: 'B.Tech, Computer Science',
+  college: 'Walchand College of Engineering, Sangli',
+  years: '2023 – 27',
+  cgpa: 8.69,
+};
+
+export const awards = [
+  { rank: '1st', title: 'WCE ACM Hackathon 2025', text: ' (Novice) — AI plant-disease detection, topped 20+ teams.' },
+  { rank: '1st', title: 'TechFusion CodeDuet 2025', text: ' — pair-programming contest.' },
+  { rank: 'Finalist', title: 'WCE ACM Hackathon 2026', text: ' — with DSVX, my dataset versioning system.' },
+  { rank: 'Top 450', rankSub: '/ 2,300+', title: 'ICPC AlgoQueen 2025', text: ' — competitive programming.' },
+  { rank: 'Mentee', title: 'Microsoft Code Without Barriers', text: ' — ML mentorship on responsible AI.' },
   {
-    title: 'Software Engineering Intern',
-    org: 'UBS, Pune',
-    period: 'Jun 2026 – Jul 2026',
-    note: '2 months',
-    tags: ['Java', 'Spring Boot', 'REST APIs', 'JUnit', 'Mockito', 'CI/CD', 'Agile/Scrum'],
-    links: [{ label: 'Certificate', href: TODO_LINK }],
-    bullets: [
-      'Refactored and developed REST APIs in Java and Spring Boot for a modular microservice architecture, following controller-service-repository design.',
-      'Wrote unit and integration tests with JUnit and Mockito, reaching 97% code coverage.',
-      'Debugged and optimized production data-service endpoints, improving performance and reliability.',
-      'Worked in an Agile/Scrum team: sprint planning, design discussions, peer code reviews, and delivery through automated CI/CD pipelines.',
-    ],
-  },
-  {
-    title: 'Main Program Director',
-    org: "Walchand Linux Users' Group (WLUG)",
-    period: 'May 2025 – Present',
-    note: 'Leadership',
-    tags: ['Open Source', 'Public Speaking', 'Community'],
-    links: [
-      { label: 'CTF platform', href: TODO_LINK },
-      { label: 'Watch FOSS FILES', href: TODO_LINK },
-    ],
-    bullets: [
-      'Coordinated 3 flagship open-source events (Open Source Day 2k26, LinuxDiary 6.0, Metamorphosis 2k26) and built a CTF platform for them.',
-      'Delivered a Golang session at Metamorphosis 2k26 (Docker and Golang) to 180+ participants; also conducted a session at LinuxDiary 5.0 and led 5+ hands-on workshops.',
-      'Presented an episode of FOSS FILES Season 6 on Anycast and DNS routing in modern web architecture.',
-    ],
-  },
-  {
-    title: 'Open Source Contributor',
-    org: 'Meshery (Layer5) · CNCF',
-    period: 'Open source',
-    note: 'Contributions',
-    tags: ['CNCF', 'Cloud Native'],
-    links: [{ label: 'GitHub', href: TODO_LINK }],
-    bullets: [
-      'Raised 3+ issues and opened 4 pull requests (under review) on Meshery, a CNCF cloud-native management platform.',
-    ],
+    rank: 'Certified',
+    title: 'Kubernetes (LFS158)',
+    href: 'https://drive.google.com/file/d/1C5-zv8kojjhybwTP3mZ_J2hNhu5rVf7M/view?usp=sharing',
+    text: ' · AWS Educate Cloud 101.',
   },
 ];
 
-// ── Projects ─────────────────────────────────────────────────────────────
-// `demo: 'limiter'` shows the live token bucket instead of a screenshot.
-// Projects without `demo` show a placeholder visual until `image` is set
-// (put the file in /public and use e.g. image: '/dsvx.png').
-export const flagshipProjects = [
-  {
+export const projects = {
+  goproxyx: {
     name: 'GoProxyX',
-    stack: ['Go', 'PostgreSQL', 'Redis', 'Docker', 'Microservices', 'REST API'],
-    demo: 'limiter',
-    flow: ['Client', 'JWT auth', 'Token bucket', 'Reverse proxy', 'Services'],
-    links: [{ label: 'GitHub', href: 'https://github.com/RameshwariS' }],
+    href: 'https://github.com/RameshwariS/GoProxyX',
+    lead: 'An API gateway in Go that routes, authenticates and rate-limits every request.',
     bullets: [
-      'Built an open-source API gateway in Go as the single entry point for dynamic path-based reverse proxy routing, JWT authentication, and rate limiting across independent microservices.',
-      'Added an Item microservice on PostgreSQL with a concurrency-safe, transactional purchase workflow that prevents double-selling under simultaneous buy requests.',
-      'Implemented a chained middleware stack (request ID, logging, panic recovery, auth, rate limiting) and a Redis token-bucket rate limiter using atomic Lua scripts to avoid race conditions under bursty traffic.',
-      'Containerized the gateway, services, cache, and database with Docker Compose, using isolated networking and a persistent data layer.',
+      ['Race-free rate limiting:', ' Redis token bucket in atomic Lua, steady under bursty traffic.'],
+      ['No double-selling:', ' transactional purchase flow on PostgreSQL.'],
+      ['Middleware chain:', ' request ID → logging → recovery → JWT auth → rate limit.'],
     ],
+    tags: ['Go', 'PostgreSQL', 'Redis', 'Lua', 'JWT', 'Docker Compose'],
   },
-  {
+  dsvx: {
     name: 'DSVX',
-    sub: 'Dataset Versioning System',
-    stack: ['Python', 'CLI', 'ML Experiment Tracking'],
+    href: 'https://github.com/RameshwariS/Dataset-Versioning-System',
+    lead: 'Git for datasets — every version content-addressed and reproducible.',
     badge: 'Finalist · WCE ACM Hackathon 2026',
-    image: null, // TODO: screenshot
-    flow: ['Raw data', 'Preprocess', 'SHA-256 ID', 'Snapshot / delta', 'Lineage'],
-    links: [
-      { label: 'GitHub', href: 'https://github.com/RameshwariS' },
-      { label: 'Blog', href: TODO_LINK },
-      { label: 'PyPI', href: TODO_LINK },
-    ],
     bullets: [
-      'Built a Git-inspired dataset versioning system, published on PyPI (dsvx), with content-addressable SHA-256 version IDs derived from raw data plus preprocessing config, so identical inputs always produce the same version.',
-      'Engineered a hybrid snapshot/delta storage engine with checkpoints every 5 versions that reconstructs every historical version exactly; 73.5% smaller than full-copy versioning in a small 5-version test (23.9 KB vs. 90.5 KB).',
-      'Designed a deterministic 6-stage preprocessing pipeline and implemented dataset comparison, lineage tracking, and branching version DAGs to trace how preprocessing changes affect experiments.',
-      'Delivered a CLI, lineage dashboard, file-watch auto-retraining, typed Python API, and optional AI-powered insights.',
+      ['Same input, same ID:', ' SHA-256 over raw data + preprocessing config.'],
+      ['73.5% smaller', ' than full copies, via a snapshot/delta engine (5-version test).'],
+      ['Lineage DAGs,', ' branching and diffs from a CLI and dashboard.'],
+    ],
+    tags: ['Python', 'CLI', 'SHA-256', 'ML tracking'],
+    links: [
+      { label: 'PyPI', href: 'https://pypi.org/project/dsvx/' },
+      { label: 'Blog', href: 'https://medium.com/@shrutisatpute1112/dsvx-building-a-git-for-datasets-in-pure-python-a69bc694a1be' },
     ],
   },
-  {
-    // ​ = optional line-break point for narrow screens
-    name: 'OpenSource​Companion',
-    stack: ['React', 'Node.js', 'Express.js', 'MongoDB', 'Socket.io', 'Docker'],
-    image: null, // TODO: screenshot
-    flow: ['GitHub OAuth', 'Skill profile', 'Issue ranking', 'Contributions', 'Notifications'],
-    links: [
-      { label: 'GitHub', href: 'https://github.com/RameshwariS' },
-      { label: 'Live', href: TODO_LINK },
-    ],
+  osc: {
+    name: 'OpenSource­Companion', // soft hyphen = tidy break on narrow tiles
+    href: 'https://github.com/RameshwariS/OPENSOURCECOMPANION',
+    lead: 'Matches developers with beginner-friendly open-source issues.',
     bullets: [
-      'Built and deployed a full-stack platform that helps developers find beginner-friendly open-source issues, track contributions, and showcase verified GitHub activity.',
-      'Developed a personalized issue recommendation system that ranks issues by user skills, languages, labels, and recency.',
-      'Integrated the GitHub REST API; secured access with GitHub OAuth 2.0, JWT, encrypted tokens, and role-based authorization.',
-      'Added real-time notifications (Socket.io), background jobs, and idempotent event handling; wrote 250+ backend tests with CI on GitHub Actions and containerized the app with Docker.',
+      ['Personalised ranking', ' by skills, languages, labels and recency.'],
+      ['Secure by default:', ' GitHub OAuth 2.0, JWT, encrypted tokens, RBAC.'],
+      ['250+ backend tests', ' in CI; real-time Socket.io notifications.'],
+    ],
+    tags: ['React', 'Node.js', 'Express', 'MongoDB', 'Socket.io', 'Docker'],
+    links: [{ label: 'Live demo', href: 'https://opensourcecompanion-fam4.onrender.com/' }],
+    // Purely illustrative UI in the tile preview
+    mockIssues: [
+      ['good first issue', 'Fix flaky CLI test', '94%'],
+      ['help wanted', 'Add dark-mode toggle', '88%'],
+      ['docs', 'Clarify local setup', '81%'],
     ],
   },
+};
+
+export const openSource = {
+  title: 'Meshery · Layer5',
+  counts: [
+    [7, 'pull requests'],
+    [3, 'repositories'],
+    [1, 'merged'],
+  ],
+  prs: [
+    { ref: 'meshery#22967', href: 'https://github.com/meshery/meshery/pull/22967', text: 'K8s context errors now surface instead of a misleading empty 200.' },
+    { ref: 'meshery#23822', href: 'https://github.com/meshery/meshery/pull/23822', text: 'Load tests now hit every configured endpoint, not just the first.' },
+    { ref: 'mesheryctl-axi', text: 'Design import / evaluate / deploy / undeploy, with --dry-run.' },
+    { ref: 'layer5#8216', href: 'https://github.com/layer5io/layer5/pull/8216', text: 'Logo + text visibility fixed in light and dark modes.' },
+  ],
+  all: 'https://github.com/meshery/meshery/pulls?q=is%3Apr+author%3ARameshwariS',
+};
+
+export const skills = {
+  core: ['Go', 'Java', 'Spring Boot', 'Node.js', 'Redis', 'Python', 'C++', 'Microservices', 'REST APIs', 'SQL'],
+  tools: [
+    'PostgreSQL', 'MySQL', 'MongoDB', 'PL/SQL', 'JavaScript', 'React.js', 'Express.js', 'HTML5 / CSS3', 'EJS',
+    'JUnit', 'Mockito', 'Docker', 'Docker Compose', 'GitHub Actions', 'Kubernetes', 'AWS', 'Linux',
+    'Claude · LLM APIs', 'GitHub Copilot',
+  ],
+  grounding: 'data structures & algorithms, OOP, operating systems, DBMS, computer networks, cloud computing, ML and GenAI.',
+};
+
+export const socials = [
+  { label: 'GitHub', href: links.github, icon: 'github' },
+  { label: 'LinkedIn', href: links.linkedin, icon: 'linkedin' },
+  { label: 'LeetCode', href: links.leetcode, icon: 'leetcode' },
+  { label: 'Medium', href: links.medium, icon: 'medium' },
 ];
 
-export const otherProjects = [
-  {
-    name: 'AgriSeva',
-    stack: ['React.js', 'Express.js', 'TensorFlow.js', 'NVIDIA APIs'],
-    badge: '1st Place · WCE ACM 2025',
-    links: [
-      { label: 'GitHub', href: 'https://github.com/Nandinipatil1410/WCEHackathon2025_TeamAnvesha' },
-      { label: 'Live', href: 'https://agriseva.vercel.app/' },
-    ],
-    bullets: [
-      'AI-powered plant disease detection processing 1,200+ images across 12 crop diseases.',
-      'Integrated crop suggestions using soil input and live weather signals.',
-      'Added multilingual government scheme explorer and chatbot assistance.',
-    ],
-  },
-  {
-    name: 'Movie Booking Site',
-    stack: ['React (Vite)', 'Node.js', 'Express.js', 'MongoDB Atlas', 'REST API'],
-    links: [{ label: 'GitHub', href: 'https://github.com/RameshwariS/MOVIE_BOOKING' }],
-    bullets: [
-      'Built a full-stack movie booking platform supporting movies, theatres, showtimes, seat booking, payments and reviews.',
-      'Designed a RESTful API across 6 resource domains with role-based authorization for USER, ADMIN, and THEATER_OWNER roles using JWT.',
-      'Integrated Google OAuth 2.0 via Google Identity Services with secure server-side ID token verification.',
-      'Architected a modular MVC backend with separated controllers, services, routes and middleware layers.',
-    ],
-  },
-  {
-    name: 'Blogify',
-    stack: ['Node.js', 'Express.js', 'MongoDB', 'EJS'],
-    links: [
-      { label: 'GitHub', href: 'https://github.com/RameshwariS/Blog' },
-      { label: 'Live', href: 'https://blogify-oz95.onrender.com/' },
-    ],
-    bullets: [
-      'Full-featured blog platform with user auth, post creation, editing and deletion.',
-      'Server-side rendering with EJS for fast initial page loads.',
-    ],
-  },
-  {
-    name: 'URL Shortener',
-    stack: ['Node.js', 'Express.js', 'MongoDB', 'EJS'],
-    links: [{ label: 'GitHub', href: 'https://github.com/RameshwariS/URL-Shortner' }],
-    bullets: [
-      'Short-link generation with fast and reliable redirection logic.',
-      'Input validation, error handling and MongoDB persistence for reliable link mappings.',
-    ],
-  },
+// What the mascot says when poked
+export const mascotLines = [
+  '200 OK!',
+  'ping → pong!',
+  'psst… type "hire"',
+  'all systems nominal',
+  'rate limit: 1 hug/sec',
+  'have you tried Go?',
 ];
-
-// ── Skills & recognition ─────────────────────────────────────────────────
-export const skillCategories = [
-  { title: 'Languages', items: ['Go', 'Java', 'C++', 'JavaScript', 'Python', 'SQL', 'PL/SQL'] },
-  { title: 'Backend', items: ['Spring Boot', 'Node.js', 'Express.js', 'REST APIs', 'Microservices', 'Redis'] },
-  { title: 'Frontend', items: ['HTML5', 'CSS3', 'React.js', 'EJS'] },
-  { title: 'Databases', items: ['PostgreSQL', 'MySQL', 'MongoDB'] },
-  { title: 'Testing', items: ['JUnit', 'Mockito', 'Unit & integration testing'] },
-  {
-    title: 'Cloud & DevOps',
-    items: ['Docker', 'Docker Compose', 'GitHub Actions', 'CI/CD', 'Kubernetes (fundamentals)', 'AWS (fundamentals)', 'Linux'],
-  },
-  { title: 'GenAI & AI tools', items: ['GitHub Copilot', 'Claude', 'LLM APIs', 'Prompt engineering'] },
-  {
-    title: 'Coursework',
-    small: true,
-    items: [
-      'Data Structures and Algorithms',
-      'Object-Oriented Programming',
-      'Operating Systems',
-      'Database Management Systems',
-      'Computer Networks',
-      'Software Engineering',
-      'Cloud Computing',
-      'Machine Learning',
-      'Generative AI',
-    ],
-  },
-  { title: 'Spoken', small: true, items: ['English — CEFR C1 (Advanced)'] },
-];
-
-export const achievements = [
-  { kind: '1st place', title: 'WCE ACM Hackathon 2025 (Novice Track)', detail: 'AI-powered plant disease detection solution, ranked 1st among 20+ teams.' },
-  { kind: '1st place', title: 'TechFusion CodeDuet 2025', detail: 'Pair-programming contest.' },
-  { kind: 'Finalist', title: 'WCE ACM Hackathon 2026', detail: 'For DSVX, the dataset versioning system.' },
-  { kind: 'Top 450', title: 'ICPC AlgoQueen 2025', detail: 'Of 2,300+ participants.' },
-  { kind: 'Mentee', title: 'Microsoft Code Without Barriers', detail: 'Competitive machine learning mentorship focused on responsible AI practices.' },
-  { kind: 'Certified', title: 'Introduction to Kubernetes (LFS158)', detail: '', link: { label: 'Certificate', href: TODO_LINK } },
-  { kind: 'Certified', title: 'AWS Educate — Introduction to Cloud 101', detail: '' },
-];
-
-export const leetcode = { solved: '750+', rating: '1745', ratingNote: 'peak', rank: 'Top 10%' };
