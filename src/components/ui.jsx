@@ -13,7 +13,7 @@ export function Arrow({ size = 14 }) {
 // ── Text motion ──────────────────────────────────────────────────────────
 // Splits a sentence into words that rise out of a mask, one after another,
 // when the nearest `.observe` ancestor (or the element itself) comes into view.
-// Wrap a phrase in *asterisks* to set it in the italic serif.
+// Wrap a phrase in *asterisks* to highlight it in the accent colour.
 export function Words({ text, as: Tag = 'span', className = '' }) {
   let italic = false;
   return (
@@ -77,11 +77,12 @@ export function Rule() {
 }
 
 // Section opener: drawn hairline, small index label, then a word-revealed title.
-export function SectionHead({ index, label, title }) {
+// `codename` is the space-themed name shown beside the plain section label.
+export function SectionHead({ index, label, codename, title }) {
   return (
     <header className="sec-head">
       <Rule />
-      <p className="label"><span>({pad(index)})</span>{label}</p>
+      <p className="label"><span>({pad(index)})</span>{label}{codename && <em>{codename}</em>}</p>
       <Words as="h2" className="sec-title" text={title} />
     </header>
   );

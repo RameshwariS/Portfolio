@@ -4,7 +4,7 @@ import { Arrow, Ext, Rule, SectionHead } from './ui.jsx';
 export default function Skills({ theme }) {
   return (
     <section id="skills" className="section wrap">
-      <SectionHead index={4} label="Skills" title="The *stack* I reach for." />
+      <SectionHead index={4} label="Skills" codename="Constellation" title="The *stack* I reach for." />
 
       <div className="matrix">
         {skillCategories.map((c) => (
@@ -19,7 +19,7 @@ export default function Skills({ theme }) {
       </div>
 
       <div className="split recog">
-        <h3 className="label"><span>(iii)</span>Recognition</h3>
+        <h3 className="label"><span>(iii)</span>Recognition<em>Signals received</em></h3>
         <ol className="awards">
           {achievements.map((a) => (
             <li className="row reveal" key={a.title}>

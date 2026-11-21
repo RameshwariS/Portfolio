@@ -4,13 +4,12 @@ import { flushSync } from 'react-dom';
 export const finePointer = () => window.matchMedia('(pointer: fine)').matches;
 export const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-// Saved choice first, otherwise follow the system setting.
+// Deep space (dark) is the designed default; a visitor's choice is remembered.
 function initialTheme() {
   try {
-    const saved = localStorage.getItem('theme');
-    if (saved === 'light' || saved === 'dark') return saved;
+    if (localStorage.getItem('theme') === 'light') return 'light';
   } catch { /* storage unavailable */ }
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  return 'dark';
 }
 
 export function useTheme() {

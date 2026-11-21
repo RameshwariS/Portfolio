@@ -94,7 +94,10 @@ function Index({ projects, offset }) {
       {projects.map((p, i) => {
         const isOpen = open === i;
         return (
-          <li className={`idx reveal ${isOpen ? 'open' : ''}`} key={p.name}>
+          // Open state lives in a data attribute, not the class list: the reveal
+          // observer adds `in-view` to this element, and a changing className
+          // would wipe it and hide the row again.
+          <li className="idx reveal" data-open={isOpen} key={p.name}>
             <Rule />
             <button
               className="idx-row"
@@ -129,9 +132,9 @@ function Index({ projects, offset }) {
 export default function Projects() {
   return (
     <section id="projects" className="section wrap">
-      <SectionHead index={3} label="Projects" title="Things I've designed, built and *shipped.*" />
+      <SectionHead index={3} label="Projects" codename="Missions" title="Things I've designed, built and *shipped.*" />
       <Stack projects={flagshipProjects} />
-      <p className="label more-label"><span>(ii)</span>More projects</p>
+      <p className="label more-label"><span>(ii)</span>More projects<em>Side quests</em></p>
       <Index projects={otherProjects} offset={flagshipProjects.length} />
     </section>
   );

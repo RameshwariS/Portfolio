@@ -22,7 +22,7 @@ export default function Loader({ leaving, onCounted }) {
 
   return (
     <div className={`loader ${leaving ? 'leaving' : ''}`} role="status" aria-label="Loading">
-      <span className="loader-tag">{profile.first} {profile.last}</span>
+      <span className="loader-tag">{profile.first} {profile.last} &middot; ignition sequence</span>
       <span className="loader-count" aria-hidden="true">{String(n).padStart(3, '0')}</span>
       <span className="loader-bar" style={{ transform: `scaleX(${n / 100})` }} />
     </div>

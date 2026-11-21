@@ -1,5 +1,5 @@
 import { profile, profileLinks } from '../data.js';
-import { Arrow, Roll, Rule, Words } from './ui.jsx';
+import { Roll, Rule, Words } from './ui.jsx';
 
 const elsewhere = [
   { label: 'GitHub', href: profileLinks.github },
@@ -12,11 +12,11 @@ export function Contact({ onCopyEmail }) {
   return (
     <section id="contact" className="section wrap contact">
       <Rule />
-      <p className="label"><span>(05)</span>Contact</p>
+      <p className="label"><span>(05)</span>Contact<em>Open a channel</em></p>
       <p className="contact-lead reveal">Have a role or a project in mind?</p>
       <a className="contact-big" href={`mailto:${profileLinks.email}`} data-cursor="Email">
         <Words text="Let's *talk*" />
-        <Arrow size={64} />
+        <span className="pulse" aria-hidden="true"><i /><i /><i /></span>
       </a>
 
       <dl className="contact-grid">
@@ -52,7 +52,7 @@ export function Contact({ onCopyEmail }) {
 export function Footer({ isMac }) {
   return (
     <footer className="footer wrap">
-      <span>&copy; {new Date().getFullYear()} {profile.first} {profile.last}</span>
+      <span>&copy; {new Date().getFullYear()} {profile.first} {profile.last} &middot; end of transmission</span>
       <span className="footer-hint">Press <kbd>{isMac ? '⌘' : 'Ctrl'}</kbd> <kbd>K</kbd> to jump anywhere</span>
       <button className="plain-link" data-magnetic="0.4" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}><Roll>Back to top</Roll> &uarr;</button>
     </footer>

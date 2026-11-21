@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { navItems, profileLinks } from './data.js';
 import { reducedMotion, useActiveSection, useClock, useMagnetic, useReveal, useTheme } from './hooks.js';
 import Cursor from './components/Cursor.jsx';
+import Starfield from './components/Starfield.jsx';
 import Loader from './components/Loader.jsx';
 import Header from './components/Header.jsx';
 import Hero from './components/Hero.jsx';
@@ -76,6 +77,8 @@ function App() {
   return (
     <div className={`page ${phase === 'loading' ? '' : 'is-ready'}`}>
       <a href="#about" className="skip-link">Skip to content</a>
+      <div className="nebula" aria-hidden="true" />
+      <Starfield />
       {phase !== 'done' && <Loader leaving={phase === 'lifting'} onCounted={onCounted} />}
       <Cursor />
 

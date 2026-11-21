@@ -23,7 +23,7 @@ export default function About() {
 
   return (
     <section id="about" className="section wrap">
-      <SectionHead index={1} label="About" title="I like the *unglamorous* parts of software." />
+      <SectionHead index={1} label="About" codename="Origin" title="I like the *unglamorous* parts of software." />
 
       <div className="split">
         <dl className="facts reveal">
